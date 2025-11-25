@@ -15,162 +15,113 @@ import {
   Users,
   GraduationCap,
   Rocket,
-  ArrowRight
+  ArrowRight,
+  Database,
+  Server,
+  ChevronRight
 } from 'lucide-react';
 
-// --- Fallback Data ---
-// Used if the Laravel API is unreachable or during initial static deployment.
-
-const FALLBACK_PROJECTS = [
-  {
-    id: 14,
-    title: "Crowd Tutor: First Light",
-    categories: ["Full Stack Ed-Tech", "AI & Analytics"],
-    role: "Founder & Lead Developer",
-    summary: "Gamified 2D learning environment built with Flutter, Bonfire, and Firebase.",
-    description: "Serving as Executive Director and Lead Developer for the Crowd Tutor Foundation. I am building 'First Light', a 2D RPG learning environment. The frontend is built with Flutter and the Bonfire engine for performant 2D rendering. The backend utilizes a serverless architecture with Node.js, Google Cloud Functions, and Firestore to manage real-time student progress and game state.",
-    tags: ["Flutter", "Bonfire 2D", "Firebase", "Cloud Functions", "Node.js", "Game Dev"]
-  },
-  {
-    id: 5,
-    title: "Adaptive AI & The MMMAAP Model",
-    categories: ["AI & Analytics", "Research & Pedagogy"],
-    role: "Founder & Lead Developer",
-    summary: "Pedagogical AI platform implementing the MMMAAP instructional framework.",
-    description: "Developed for the Crowd Tutor Foundation, this project implements the MMMAAP model (Multi-modal, Multi-agent, Adaptive, Affective, Personalized) to support individuals in identifying values and developing value-aligned expertise. The system uses AI to generate content and adapt pathways based on learner affect and choice, distinct from my qualitative research tools.",
-    tags: ["Startup", "Adaptive Learning", "AI", "Pedagogy", "MMMAAP Framework"]
-  },
+// --- Latest Resume Data ---
+const PROJECTS = [
   {
     id: 1,
-    title: "SCORE & CK Board",
-    categories: ["Full Stack Ed-Tech"],
-    role: "Full Stack Developer (Encore Lab)",
-    summary: "Real-time orchestration environment using Angular, Node.js, Redis & WebSockets.",
-    description: "Collaborated with the Encore Lab at OISE to support the full stack development of CK Board and SCORE (Open Source). The platform uses a scalable architecture featuring an Angular frontend and a Node.js backend. We implemented Redis for high-speed state management and WebSockets for real-time collaboration across the 'CK Monitor' (teacher dashboard) and 'CK Canvas' (student workspace). Data persistence is handled via MongoDB to support large-scale classroom analytics.",
-    tags: ["Angular", "Node.js", "Redis", "WebSockets", "MongoDB", "Real-time", "Open Source"],
-    links: [
-      { label: "GitHub Repository", url: "https://github.com/encorelab/ck-board" }
-    ]
-  },
-  {
-    id: 3,
-    title: "Scalable Qualitative Research with LLMs",
+    title: "AI Theme Analyser & HitL Tools",
     categories: ["AI & Analytics", "Research & Pedagogy"],
-    role: "AI Tool Developer",
-    summary: "Open source Human-in-the-loop tools for extraction, emotion analysis, and thematic coding.",
-    description: "Leveraged Large Language Models (LLMs) to build open-source tools for scalable qualitative research. This suite includes a 'Human-in-the-loop' system for emotion analysis, large-scale thematic analysis workflows, and full-text data extraction for scoping reviews. These tools allow researchers to process vast datasets with the nuance of human coding but the speed of AI.",
-    tags: ["LLMs", "Python", "AI", "Qualitative Research", "Data Extraction", "Open Source"],
+    role: "Lead Developer",
+    summary: "Human-in-the-Loop tools for qualitative research using Vertex AI.",
+    description: "Developed 'Human-in-the-Loop' (HitL) tools for qualitative research. Created a Thematic Analysis engine that performs coding, theme generation, magnitude coding, cross-case reporting, and automated theme map visualization. Published methodology in ICLS proceedings. Integrated Gemini/Vertex AI to enable educators to synthesize and manipulate text artifacts.",
+    tags: ["Python", "Vertex AI", "LLMs", "HitL Workflows", "Qualitative Analysis"],
     links: [
-      { label: "AI Data Extractor", url: "https://github.com/JoelWiebe/AI-Data-Extractor" },
-      { label: "AI Emotion Analyzer", url: "https://github.com/JoelWiebe/AI-Emotion-Analyzer" },
       { label: "AI Theme Analyzer", url: "https://github.com/JoelWiebe/ai-theme-analyzer" }
     ]
   },
   {
-    id: 13,
-    title: "AI Document Structure Converter",
-    categories: ["AI & Analytics"],
-    role: "Developer",
-    summary: "Python tool leveraging AI to convert PDFs into structured DOCX files.",
-    description: "Developed 'ai-pdf2docx', a specialized Python tool designed to convert PDF documents into editable DOCX formats while preserving complex layouts and structure better than traditional tools. This project leverages AI models to interpret visual document elements, making it particularly useful for researchers extracting data from complex academic papers.",
-    tags: ["Python", "AI", "Document Processing", "Automation", "Open Source"],
+    id: 2,
+    title: "Personal Portfolio Infrastructure",
+    categories: ["Full Stack Ed-Tech", "Cloud & DevOps"],
+    role: "Architect",
+    summary: "High-availability portfolio on OCI using Laravel and MySQL.",
+    description: "Architected a personal portfolio using Laravel and MySQL hosted on Oracle Cloud Infrastructure (OCI). Demonstrates high-fidelity implementation of OWASP security controls, AODA-compliant accessible design, and performant CSS/JS animations, utilizing Eloquent ORM for robust data modeling.",
+    tags: ["Laravel", "MySQL", "OCI", "Nginx", "AODA", "OWASP"]
+  },
+  {
+    id: 3,
+    title: "Crowd Tutor: Knowledge Worlds (In-Progress)",
+    categories: ["Full Stack Ed-Tech", "AI & Analytics"],
+    role: "Founding Director & Lead Developer",
+    summary: "Scalable adaptive learning platform using Flutter and Generative AI.",
+    description: "Founded a tech initiative for youth upskilling. Architecting a scalable adaptive learning platform using Flutter, Firebase, and Generative AI to gamify interest exploration and social learning. The system implements the MMMAAP instructional model (Multi-modal, Multi-agent, Adaptive, Affective, Personalized).",
+    tags: ["Flutter", "Firebase", "Generative AI", "Bonfire 2D", "Mobile"],
     links: [
-      { label: "GitHub Repository", url: "https://github.com/JoelWiebe/ai-pdf2docx" }
+      { label: "crowdtutor.org", url: "https://crowdtutor.org" }
     ]
   },
   {
     id: 4,
-    title: "WISE Project (Berkeley Collab)",
-    categories: ["Full Stack Ed-Tech", "Research & Pedagogy"],
-    role: "Collaborator & Developer",
-    summary: "Forked and enhanced the WISE learning environment for international research.",
-    description: "Collaborated for several years with developers of the Web-based Inquiry Science Environment (WISE) project at UC Berkeley. Forked the codebase (Java/Spring, Angular) to introduce custom features for research studies in China, Europe, and Canada. Work included using LLMs for limited Knowledge Integration (KI) assessment and deploying containerized environments using Docker.",
-    tags: ["Open Source", "Java/Spring", "Angular", "Docker", "International Collaboration"]
+    title: "CK Board & SCORE Platform",
+    categories: ["Full Stack Ed-Tech", "Cloud & DevOps"],
+    role: "Full Stack Developer & Researcher",
+    summary: "Real-time orchestration on Azure PaaS with Node.js and WebSockets.",
+    description: "Architected the CK Board and SCORE Authoring platforms on Azure PaaS. Utilized Angular, Node.js, and FabricJS for the frontend canvases. Implemented Redis and WebSockets to power 'RoomCast,' enabling real-time distribution and synchronization of artifacts across student devices in high-availability educational settings.",
+    tags: ["Angular", "Node.js", "Azure PaaS", "Redis", "WebSockets", "FabricJS", "MongoDB"]
   },
   {
-    id: 7,
-    title: "ICAP Analytics & Co-design",
-    categories: ["Research & Pedagogy", "AI & Analytics"],
-    role: "Researcher & Co-designer",
-    summary: "Learning analytics and orchestration tools for Math classrooms.",
-    description: "Led a multi-year co-design project with a Grade 6 math teacher to integrate Social Emotional Learning (SEL) and ICAP (Interactive, Constructive, Active, Passive) reflections. Developed custom scripting and orchestration software that visualized student self-reports, graphed scored results, and supported goal setting. The system adaptively assigned script roles based on real-time analytics.",
-    tags: ["Learning Analytics", "Co-design", "Mathematics Ed", "ICAP Framework", "Visualization"]
-  },
-  {
-    id: 9,
-    title: "Knowledge Building in China",
-    categories: ["Research & Pedagogy", "AI & Analytics"],
-    role: "Coordinator & Researcher",
-    summary: "Coordinated Knowledge Forum server installations and analytics-supported inquiry.",
-    description: "Brought Knowledge Building pedagogy to classrooms in China by coordinating Knowledge Forum (KF) server installations. Conducted research using learning analytics to support knowledge building discourse. During the pandemic, designed interactive activities for hundreds of students focusing on shared problem-solving hints.",
-    tags: ["Knowledge Forum", "Analytics", "Remote Learning", "Pedagogy"]
-  },
-  {
-    id: 15,
-    title: "Anytime, Anywhere Knowledge Building",
-    categories: ["Research & Pedagogy"],
-    role: "MA Researcher",
-    summary: "Master's thesis on extending student inquiry beyond the classroom.",
-    description: "Conducted MA research focusing on the concept of 'anytime, anywhere' knowledge building. Designed interventions to extend student inquiry with technology beyond synchronous dialogue, across extended periods of time, and between asynchronous and synchronous forms. This work laid the theoretical groundwork for later technical orchestration systems.",
-    tags: ["Knowledge Building", "MA Thesis", "Asynchronous Learning", "Design Research"]
-  },
-  {
-    id: 2,
-    title: "ISLS Proceedings Repository",
-    categories: ["Full Stack Ed-Tech"],
-    role: "Technical Manager & Developer",
-    summary: "Serverless academic workflow tools deployed on Google Cloud Run.",
-    description: "Managed the online Repository for the International Society of the Learning Sciences (ISLS). Engineered a suite of support tools including automated DSpace import generation and DOI metadata registration. Created a full-stack application deployed on Google Cloud Run (serverless containers) to validate complex academic paper formatting, significantly expediting the creation of proceedings front/back matter.",
-    tags: ["Google Cloud Run", "Python", "Serverless", "Docker", "Automation", "Metadata"]
-  },
-  {
-    id: 12,
-    title: "Truth: The News Annotator",
-    categories: ["Full Stack Ed-Tech"],
-    role: "Lead Designer & Prototyper",
-    summary: "Mobile app prototype for crowdsourced news vetting.",
-    description: "Designed and prototyped a mobile application to combat fake news through collective annotation. The tool provides a framework for students and news enthusiasts to crowdsource dissections of articles based on fact-checking, source reliability, and author bias. This project focused on UI/UX design for 'just-in-time' media literacy instruction.",
-    tags: ["Mobile Dev", "UI/UX", "Prototyping", "Media Literacy"]
-  },
-  {
-    id: 11,
-    title: "Future Cities, Future Us",
-    categories: ["Public & Community"],
-    role: "Technical Partner",
-    summary: "Digital/Physical display collaboration with Evergreen Brickworks and 1UP youth.",
-    description: "Partnered with Evergreen Brickworks, Urban Minds, and 1UP Toronto to build a youth-led interactive experience. Facilitated the creation of a digital and physical display for the Future Cities Canada Summit. The project involved capturing youth ideas for sustainable urban futures and visualizing them to engage professionals and community visitors.",
-    tags: ["Community Engagement", "Digital Display", "Visualization", "Partnership"]
+    id: 5,
+    title: "ISLS Technical Infrastructure",
+    categories: ["Cloud & DevOps", "Full Stack Ed-Tech"],
+    role: "Technical Lead, Publications",
+    summary: "Automation pipelines for proceedings and DSpace repositories.",
+    description: "Global Technical Leadership for the International Society of the Learning Sciences. Engineered Python automation pipelines to process proceedings metadata, generate import packages for DSpace, and execute automated DOI registration via CrossRef. Developed a full-stack validation tool using Docker, Flask, and Jinja2 on Google Cloud.",
+    tags: ["Python", "DSpace", "Docker", "Flask", "Google Cloud", "CrossRef"]
   },
   {
     id: 6,
-    title: "Remote Nursing Education & Robotics",
-    categories: ["Ed-Tech Support"],
-    role: "E-Learning Specialist & Admin",
-    summary: "Supported telepresence robotics and digital OSCE examinations.",
-    description: "Hired by the University of Saskatchewan to transform nursing education. Implemented telepresence robotics for teaching nurses in remote areas and digitized OSCE examinations. Managed electronic exams via ExamSoft, developed a custom bookings tool using Nintex in SharePoint, and served as administrator for SharePoint, Blackboard, and the College of Nursing website.",
-    tags: ["SharePoint", "Telepresence", "LMS Admin", "Nintex", "Robotics"]
+    title: "WISE Project (Berkeley Collab)",
+    categories: ["Full Stack Ed-Tech"],
+    role: "Collaborator & Developer",
+    summary: "Extended Java Spring/Angular codebase for international research.",
+    description: "Forked and extended a complex Java Spring/Angular codebase to support international research. Deployed containerized environments using Docker and explored new applications of LLMs for knowledge integration guidance and assessment.",
+    tags: ["Java Spring", "Angular", "Docker", "LLMs", "Research"]
+  },
+  {
+    id: 7,
+    title: "ECE Data Visualization",
+    categories: ["AI & Analytics", "Consulting"],
+    role: "Technical Data Consultant",
+    summary: "Automated assessment reporting workflow for Govt. of Nova Scotia.",
+    description: "Designed a Python-based data curation and visualization workflow for Mount Saint Vincent University and the Government of Nova Scotia. The system generates automated assessment reports for Early Childhood Education Centers, supporting government quality assurance teams.",
+    tags: ["Python", "Data Visualization", "Consulting", "Automation"]
   },
   {
     id: 8,
-    title: "Surface & Robotics Integration",
+    title: "Robot Control Interface",
     categories: ["HCI & Robotics"],
-    role: "HCI Developer",
-    summary: "WPF desktop and Surface app development for controlling industrial inspection robots.",
-    description: "Performed integration of a Windows Presentation Foundation (WPF) desktop app (C#) and a C++ touch application for the Microsoft Surface table. Developed a 3D orientation representation interface for controlling Inuktun's SP90 inspection robot, facilitating use by energy companies.",
-    tags: ["C#", "C++", "WPF", "HCI", "Industrial Robotics"]
+    role: "Robotics & Interface Developer",
+    summary: "C#/WPF application for Microsoft Surface to control inspection robots.",
+    description: "Designed a full-stack C#/WPF application for the Microsoft Surface tablet to control Inuktun inspection robot cameras and configurations. Implemented 3D animations to visualize robot body orientation and camera views in real-time. Also engineered a microcontroller system for a Nao humanoid robot.",
+    tags: ["C#", "WPF", "Robotics", "Microsoft Surface", "3D Animation", "Nao"]
+  },
+  {
+    id: 9,
+    title: "College of Nursing Operations",
+    categories: ["Ed-Tech Support"],
+    role: "Project Manager & Dev",
+    summary: "Managed SharePoint workflows and institutional PHP website.",
+    description: "Co-administered the College’s institutional PHP website and managed complex internal workflows using SharePoint (room bookings, document management). Sustained the technical use of ExamSoft and facilitated the adoption of electronic grading for OSCEs.",
+    tags: ["PHP", "SharePoint", "ExamSoft", "LMS", "Operations"]
   },
   {
     id: 10,
-    title: "Autonomous Agents & Telepresence",
-    categories: ["HCI & Robotics"],
-    role: "Robotics Researcher",
-    summary: "Contributed to Nao and Darwin robot development for international competition.",
-    description: "Member of the HCI Lab at the University of Manitoba contributing to a telepresence robotics research paper using the Nao robot. Also developed code for a Darwin robot for the Autonomous Agents Lab, competing in an international Marathon competition.",
-    tags: ["Robotics", "Nao", "Autonomous Agents", "HCI"]
+    title: "Geomax Enterprise Mobile",
+    categories: ["Full Stack Ed-Tech", "Legacy Systems"],
+    role: "Wireless Application Developer",
+    summary: "Java Server Pages (JSP) application with Hibernate ORM.",
+    description: "Designed and deployed a Java Server Pages (JSP) application utilizing Servlets, JavaBeans, and Hibernate ORM for efficient MySQL data management. Implemented interactive front-ends using JavaScript and jQuery that integrated with server-side logic for push notifications.",
+    tags: ["Java", "JSP", "Hibernate ORM", "MySQL", "jQuery", "Enterprise"]
   }
 ];
 
-const CATEGORIES = ["All", "Full Stack Ed-Tech", "AI & Analytics", "Research & Pedagogy", "HCI & Robotics", "Public & Community"];
+const CATEGORIES = ["All", "Full Stack Ed-Tech", "AI & Analytics", "Cloud & DevOps", "HCI & Robotics", "Research & Pedagogy"];
 
 // --- Components ---
 
@@ -216,7 +167,7 @@ const Modal = ({ project, onClose }) => {
           {/* Links Section */}
           {project.links && project.links.length > 0 && (
             <div className="mb-8">
-              <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-3">Key Repositories</h3>
+              <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-3">Key Repositories & Links</h3>
               <div className="flex flex-col gap-2">
                 {project.links.map(link => (
                   <a 
@@ -226,7 +177,9 @@ const Modal = ({ project, onClose }) => {
                     rel="noreferrer"
                     className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
                   >
-                    <Github className="w-4 h-4" /> {link.label} <ExternalLink className="w-3 h-3" />
+                    {link.url.includes("github") ? <Github className="w-4 h-4" /> : <Globe className="w-4 h-4" />} 
+                    {link.label} 
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 ))}
               </div>
@@ -264,6 +217,7 @@ const ProjectCard = ({ project, onClick }) => {
              mainCat.includes("Research") ? <BookOpen className="w-6 h-6 text-indigo-600" /> :
              mainCat.includes("Public") ? <Users className="w-6 h-6 text-indigo-600" /> :
              mainCat.includes("Mobile") ? <Smartphone className="w-6 h-6 text-indigo-600" /> :
+             mainCat.includes("Cloud") ? <Server className="w-6 h-6 text-indigo-600" /> :
              <Code className="w-6 h-6 text-indigo-600" />}
           </div>
           <ExternalLink className="w-5 h-5 text-slate-300 group-hover:text-indigo-500 transition-colors" />
@@ -301,27 +255,25 @@ const NavLink = ({ href, children }) => (
   </a>
 );
 
-const Portfolio = () => {
+const App = () => {
   const [activeFilter, setActiveFilter] = useState("All");
-  const [projects, setProjects] = useState(FALLBACK_PROJECTS);
+  // Initialize with Data (No API Call needed for Single-File Version)
+  const [projects, setProjects] = useState(PROJECTS);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Backend Connection Effect (Graceful Fallback)
+  // Optional: If you still want to TRY fetching API but fallback gracefully
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await fetch('/api/projects');
         if (response.ok) {
           const data = await response.json();
-          if (data && data.length > 0) {
-            setProjects(data);
-          }
+          if (data && data.length > 0) setProjects(data);
         }
       } catch (error) {
-        // Silent fail to fallback data - Website still works!
-        console.log('API unavailable, using static data.');
+        // API not found, using static PROJECTS list
       }
     };
     fetchProjects();
@@ -345,7 +297,7 @@ const Portfolio = () => {
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">J</div>
-            <span className="font-bold text-xl tracking-tight text-slate-900">Joel Wiebe</span>
+            <span className="font-bold text-xl tracking-tight text-slate-900">Joel P. Wiebe</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
@@ -383,26 +335,25 @@ const Portfolio = () => {
           <div className="flex flex-col items-start max-w-3xl animate-slideUp">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-medium mb-6">
               <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
-              Product-Minded Technical Lead
+              Full Stack Developer | Technical Lead | AI Specialist
             </div>
             <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-tight">
-              Technical <span className="text-indigo-600">Product Leadership</span> with <span className="text-indigo-600">Full Stack</span> Execution.
+              Bridging <span className="text-indigo-600">Learning Sciences</span> and <span className="text-indigo-600">Software Engineering</span>.
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed mb-10 max-w-2xl">
-              I combine the strategic vision of a Product Manager with the execution speed of an AI-augmented Full Stack Developer. I engineer scalable ed-tech systems, lead technical teams, and automate complex research workflows.
+              With 8+ years of experience, I architect high-availability educational technologies and AI-augmented workflows. From complex backend systems to Azure PaaS, my work is technically rigorous and pedagogically grounded.
             </p>
             
             {/* Primary Actions */}
-            <div className="flex flex-wrap gap-4 mb-6">
-              <a href="#portfolio" className="px-8 py-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 hover:scale-105 transition-all shadow-lg shadow-indigo-500/30">
-                View Selected Works
+            <div className="flex flex-wrap gap-4 mb-8">
+              <a href="#portfolio" className="px-8 py-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 hover:scale-105 transition-all shadow-lg shadow-indigo-500/30 flex items-center gap-2">
+                View Selected Works <ChevronRight className="w-4 h-4" />
+              </a>
+              
+              <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="px-8 py-4 bg-white text-slate-700 border-2 border-slate-200 rounded-xl font-semibold hover:border-indigo-600 hover:text-indigo-600 transition-all shadow-sm hover:shadow-md flex items-center gap-2">
+                Visit Full Academic Profile <ExternalLink className="w-4 h-4" />
               </a>
             </div>
-
-            {/* Text Link to Full Site */}
-            <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-all group">
-              Looking for publications? Visit full academic archive at JoelWiebe.ca <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
           </div>
         </div>
       </section>
@@ -412,10 +363,10 @@ const Portfolio = () => {
         <div className="container mx-auto px-6 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { label: "Full Stack", sub: "Angular, Node, React" },
-              { label: "Cloud & Dev", sub: "Cloud Run, Redis" },
-              { label: "AI Integration", sub: "LLM Pairing, Python" },
-              { label: "Product Lead", sub: "Strategy, Co-design" }
+              { label: "Full Stack", sub: "Laravel, Node, Angular" },
+              { label: "Cloud & DevOps", sub: "OCI, Azure, Docker" },
+              { label: "AI & Automation", sub: "Vertex AI, Python, Node.js" },
+              { label: "Enterprise", sub: "SharePoint, DSpace" }
             ].map((stat, i) => (
               <div key={i} className="flex flex-col">
                 <span className="font-bold text-lg text-slate-900">{stat.label}</span>
@@ -432,7 +383,7 @@ const Portfolio = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Professional Experience</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
-              From founding non-profits to engineering university research platforms.
+              A curated selection of projects spanning 8 years of software engineering, educational research, and robotics integration.
             </p>
           </div>
 
@@ -474,26 +425,26 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-3 gap-12">
             {/* Bio Column */}
             <div className="md:col-span-2 bg-indigo-900 text-white rounded-3xl p-8 md:p-12 shadow-xl">
-              <h2 className="text-3xl font-bold text-white mb-6">The Product-Minded Lead</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">Technical Leadership</h2>
               <p className="text-indigo-100 leading-relaxed mb-6">
-                I approach development differently. By leveraging LLMs as pair-programming partners, I operate with the velocity of a full team. This allows me to function as a <strong>Product-Minded Technical Lead</strong> who is not afraid to get deep into the code.
+                I possess a unique dual background: <strong>Computer Science (B.Sc.)</strong> and <strong>Learning Sciences (PhD Candidate)</strong>. This allows me to build software that is not only technically robust but also pedagogically effective.
               </p>
               <p className="text-indigo-100 leading-relaxed mb-8">
-                Whether I am acting as the Executive Director for Crowd Tutor or developing orchestrations for OISE, my focus is on <strong>delivery</strong>—bridging the gap between stakeholder needs and deployed, scalable software.
+                My experience spans the entire stack: from complex backend systems and Robotics control interfaces to modern Cloud Architectures and AI Automation. I have a proven track record of adhering to AODA and OWASP standards within university contexts.
               </p>
               
               <div className="flex flex-col md:flex-row gap-6 pt-4 border-t border-indigo-700/50">
                  <div className="flex-1">
                    <div className="flex items-center gap-2 mb-2 text-indigo-300 font-semibold">
-                     <Rocket className="w-5 h-5" /> High Velocity
+                     <Rocket className="w-5 h-5" /> Systems Architecture
                    </div>
-                   <p className="text-sm text-indigo-200">Accelerating delivery through AI-augmented workflows.</p>
+                   <p className="text-sm text-indigo-200">Designing scalable, high-availability systems on OCI and Azure.</p>
                  </div>
                  <div className="flex-1">
                    <div className="flex items-center gap-2 mb-2 text-indigo-300 font-semibold">
-                     <Users className="w-5 h-5" /> Product & People
+                     <Users className="w-5 h-5" /> Team Leadership
                    </div>
-                   <p className="text-sm text-indigo-200">Leading teams and coordinating stakeholders with technical clarity.</p>
+                   <p className="text-sm text-indigo-200">Leading technical strategy and automating workflows for global organizations.</p>
                  </div>
               </div>
             </div>
@@ -510,9 +461,9 @@ const Portfolio = () => {
 
                 <div className="space-y-6">
                   <div>
-                    <p className="font-bold text-slate-900">PhD (Candidate)</p>
+                    <p className="font-bold text-slate-900">Ph.D. Candidate</p>
                     <p className="text-sm text-indigo-600 font-medium">OISE, University of Toronto</p>
-                    <p className="text-xs text-slate-500 mt-1">Curriculum Studies & Teacher Development (Knowledge Media Design)</p>
+                    <p className="text-xs text-slate-500 mt-1">Curriculum & Pedagogy (Expected 2027)</p>
                   </div>
                   
                   <div className="w-full h-px bg-slate-200"></div>
@@ -520,19 +471,15 @@ const Portfolio = () => {
                   <div>
                     <p className="font-bold text-slate-900">Master of Arts</p>
                     <p className="text-sm text-indigo-600 font-medium">OISE, University of Toronto</p>
-                    <p className="text-xs text-slate-500 mt-1">Knowledge Media Design</p>
+                    <p className="text-xs text-slate-500 mt-1">Curriculum & Pedagogy (2019)</p>
                   </div>
 
                   <div className="w-full h-px bg-slate-200"></div>
 
                   <div>
-                    <p className="font-bold text-slate-900">BSc Computer Science</p>
-                    <p className="text-sm text-indigo-600 font-medium">University of Manitoba</p>
-                    <p className="text-xs text-slate-500 mt-1">First Class Honours, Co-op Option</p>
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-[10px] bg-slate-200 px-2 py-1 rounded text-slate-600">AI</span>
-                      <span className="text-[10px] bg-slate-200 px-2 py-1 rounded text-slate-600">Software Eng</span>
-                    </div>
+                    <p className="font-bold text-slate-900">Honours B.Sc., Computer Science</p>
+                    <p className="text-sm text-indigo-600 font-medium">University of Toronto</p>
+                    <p className="text-xs text-slate-500 mt-1">AI, Software Engineering, Web-based Systems (2015)</p>
                   </div>
                 </div>
               </div>
@@ -546,22 +493,17 @@ const Portfolio = () => {
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">Get In Touch</h2>
           <div className="flex justify-center gap-6 mb-12">
-            <a href="mailto:joel.wiebe@example.com" className="p-4 bg-white rounded-full shadow-sm hover:shadow-md hover:text-indigo-600 transition-all">
-              <Mail className="w-6 h-6" />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="p-4 bg-white rounded-full shadow-sm hover:shadow-md hover:text-indigo-600 transition-all">
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="p-4 bg-white rounded-full shadow-sm hover:shadow-md hover:text-indigo-600 transition-all">
-              <Github className="w-6 h-6" />
-            </a>
-            <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="p-4 bg-white rounded-full shadow-sm hover:shadow-md hover:text-indigo-600 transition-all">
-              <Globe className="w-6 h-6" />
+            <a href="mailto:me@joelwiebe.ca" className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md hover:text-indigo-600 transition-all border border-slate-200 text-slate-700 font-medium">
+              <Mail className="w-5 h-5" /> me@joelwiebe.ca
             </a>
           </div>
-          <p className="text-slate-400 text-sm">
-            © {new Date().getFullYear()} Joel Wiebe. Built with React, Tailwind CSS & Laravel.
-          </p>
+          <div className="flex flex-col items-center gap-2 text-slate-400 text-sm">
+            <div className="flex items-center gap-2">
+               <Database className="w-4 h-4 text-indigo-500" />
+               <span>Built with <strong>Laravel 10</strong> & <strong>React 18</strong></span>
+            </div>
+            <p>© {new Date().getFullYear()} Joel P. Wiebe. All rights reserved.</p>
+          </div>
         </div>
       </footer>
 
@@ -586,4 +528,4 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;
+export default App;
