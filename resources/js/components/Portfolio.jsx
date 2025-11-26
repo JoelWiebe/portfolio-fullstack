@@ -20,7 +20,9 @@ import {
   FileText,
   Search,
   Server,
-  Database
+  Database,
+  Check, 
+  Copy   
 } from 'lucide-react';
 
 // --- Latest Resume Data ---
@@ -196,7 +198,7 @@ const CATEGORIES = ["All", "Full Stack Ed-Tech", "AI & Analytics", "Cloud & DevO
 // --- Components ---
 
 const Badge = ({ children, className = "" }) => (
-  <span className={`px-3 py-1 text-sm font-medium rounded-full bg-slate-100 text-[#002A5C] border border-slate-200 ${className}`}>
+  <span className={`px-3 py-1 text-base font-medium rounded-full bg-slate-100 text-[#002A5C] border border-slate-200 ${className}`}>
     {children}
   </span>
 );
@@ -205,32 +207,38 @@ const Modal = ({ project, onClose }) => {
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 transition-opacity animate-fadeIn">
+    <div 
+      role="dialog" 
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 transition-opacity animate-fadeIn"
+    >
       <div 
         className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative animate-slideUp"
         onClick={(e) => e.stopPropagation()}
       >
         <button 
           onClick={onClose}
+          aria-label="Close project details" // ACCESSIBILITY: Added Label
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 transition-colors z-10 bg-white"
         >
-          <X className="w-6 h-6 text-slate-500" />
+          <X className="w-6 h-6 text-slate-600" />
         </button>
         
         <div className="p-8">
           <div className="mb-6">
             <div className="flex gap-2 mb-2 flex-wrap">
               {project.categories.map(cat => (
-                 <span key={cat} className="text-[#002A5C] font-semibold tracking-wider text-sm uppercase block">
+                 <span key={cat} className="text-[#002A5C] font-semibold tracking-wider text-base uppercase block">
                   {cat}
                 </span>
               ))}
             </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-2">{project.title}</h2>
+            <h2 id="modal-title" className="text-3xl font-bold text-slate-900 mb-2">{project.title}</h2>
             <p className="text-xl text-slate-700 font-medium">{project.role}</p>
           </div>
 
-          <div className="prose prose-slate max-w-none mb-8 text-slate-700 text-base leading-relaxed whitespace-pre-line">
+          <div className="prose prose-slate max-w-none mb-8 text-slate-700 text-lg leading-relaxed whitespace-pre-line">
             <p>{project.description}</p>
           </div>
           
@@ -242,14 +250,14 @@ const Modal = ({ project, onClose }) => {
                   <a 
                     key={link.url} 
                     href={link.url} 
-                    className="flex items-center gap-2 text-[#002A5C] hover:text-[#00204E] font-medium transition-colors text-base"
+                    className="flex items-center gap-2 text-[#002A5C] hover:text-[#00204E] font-medium transition-colors text-lg"
                   >
-                    {link.url.includes("youtube") ? <Play className="w-4 h-4" /> :
-                     link.url.includes("doi.org") || link.url.includes("ieeexplore") ? <FileText className="w-4 h-4" /> : 
-                     link.url.includes("github") ? <Github className="w-4 h-4" /> : 
-                     <Globe className="w-4 h-4" />} 
+                    {link.url.includes("youtube") ? <Play className="w-5 h-5" /> :
+                     link.url.includes("doi.org") || link.url.includes("ieeexplore") ? <FileText className="w-5 h-5" /> : 
+                     link.url.includes("github") ? <Github className="w-5 h-5" /> : 
+                     <Globe className="w-5 h-5" />} 
                     {link.label} 
-                    <ExternalLink className="w-3 h-3" />
+                    <ExternalLink className="w-4 h-4" />
                   </a>
                 ))}
               </div>
@@ -275,11 +283,12 @@ const Modal = ({ project, onClose }) => {
 const ProjectCard = ({ project, onClick }) => {
   const mainCat = project.categories[0];
   return (
-    <div 
+    <button 
+      type="button"
       onClick={() => onClick(project)}
-      className="group bg-white rounded-xl border border-slate-200 hover:border-[#002A5C]/50 hover:shadow-lg hover:shadow-[#002A5C]/10 transition-all duration-300 cursor-pointer flex flex-col h-full overflow-hidden"
+      className="w-full text-left group bg-white rounded-xl border border-slate-200 hover:border-[#002A5C]/50 hover:shadow-lg hover:shadow-[#002A5C]/10 transition-all duration-300 cursor-pointer flex flex-col h-full overflow-hidden focus:outline-none focus:ring-4 focus:ring-[#002A5C]/20"
     >
-      <div className="p-6 flex flex-col h-full">
+      <div className="p-6 flex flex-col h-full w-full">
         <div className="flex justify-between items-start mb-4">
           <div className="p-2 bg-slate-100 rounded-lg group-hover:bg-slate-200 transition-colors">
             {mainCat.includes("Robotics") ? <Cpu className="w-6 h-6 text-[#002A5C]" /> :
@@ -304,23 +313,23 @@ const ProjectCard = ({ project, onClick }) => {
         
         <div className="flex flex-wrap gap-2 mt-auto pt-4">
           {project.tags.slice(0, 3).map(tag => (
-            <span key={tag} className="text-sm text-slate-600 bg-slate-50 px-2 py-1 rounded border border-slate-100">
+            <span key={tag} className="text-base text-slate-600 bg-slate-50 px-2 py-1 rounded border border-slate-100">
               {tag}
             </span>
           ))}
           {project.tags.length > 3 && (
-            <span className="text-sm text-slate-500 px-1 py-1">+ {project.tags.length - 3}</span>
+            <span className="text-base text-slate-600 px-1 py-1">+ {project.tags.length - 3}</span>
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
 const NavLink = ({ href, children }) => (
   <a 
     href={href}
-    className="text-base font-medium text-slate-700 transition-colors hover:text-[#002A5C]"
+    className="text-lg font-medium text-slate-700 transition-colors hover:text-[#002A5C]"
   >
     {children}
   </a>
@@ -333,12 +342,14 @@ const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Hook to detect if user prefers reduced motion (OS Level)
+  
+  // New State for Email Copy
+  const [emailCopied, setEmailCopied] = useState(false);
+  
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    // API logic (future proofing)
+    // Note: API implementation is commented out for this view, using static data.
   }, []);
 
   useEffect(() => {
@@ -346,6 +357,38 @@ const Portfolio = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleCopyEmail = () => {
+    const email = "me@joelwiebe.ca";
+    
+    // Fallback method for iframe/restricted environments where navigator.clipboard is blocked
+    const textArea = document.createElement("textarea");
+    textArea.value = email;
+    
+    // Ensure it's not visible on screen
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      // Execute the copy command
+      const successful = document.execCommand('copy');
+      if(successful) {
+        setEmailCopied(true);
+        setTimeout(() => setEmailCopied(false), 2000);
+      } else {
+         console.error('Fallback copy command failed.');
+      }
+    } catch (err) {
+      console.error('Fallback copy failed: ', err);
+    }
+    
+    document.body.removeChild(textArea);
+  };
 
   const filteredProjects = projects.filter(p => {
     const matchesCategory = activeFilter === "All" || p.categories.includes(activeFilter);
@@ -375,12 +418,16 @@ const Portfolio = () => {
             <NavLink href="#portfolio">Portfolio</NavLink>
             <NavLink href="#contact">Contact</NavLink>
             
-            <a href="https://joelwiebe.ca" className="flex items-center gap-1 text-base font-semibold text-[#002A5C] hover:text-[#00204E] transition-colors">
-              Visit JoelWiebe.ca <ExternalLink className="w-3 h-3" />
+            <a href="https://joelwiebe.ca" className="flex items-center gap-1 text-lg font-semibold text-[#002A5C] hover:text-[#00204E] transition-colors">
+              Visit JoelWiebe.ca <ExternalLink className="w-4 h-4" />
             </a>
           </div>
 
-          <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button 
+            className="md:hidden p-2" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"} // ACCESSIBILITY: Label Added
+          >
             {mobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -389,7 +436,7 @@ const Portfolio = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-30 bg-white pt-24 px-6 md:hidden">
-          <div className="flex flex-col gap-6 text-lg">
+          <div className="flex flex-col gap-6 text-xl">
             <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
             <a href="#portfolio" onClick={() => setMobileMenuOpen(false)}>Portfolio</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
@@ -404,7 +451,7 @@ const Portfolio = () => {
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col items-start max-w-3xl animate-slideUp">
             
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-[#002A5C] text-base font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-[#002A5C] text-lg font-medium mb-6">
               <span className="w-2 h-2 rounded-full bg-[#002A5C] animate-pulse"></span>
               Full Stack Developer | Technical Lead | AI Specialist
             </div>
@@ -417,12 +464,12 @@ const Portfolio = () => {
             </p>
             
             <div className="flex flex-wrap gap-4 mb-8">
-              <a href="#portfolio" className="px-8 py-4 bg-[#002A5C] text-white rounded-xl font-semibold hover:bg-[#00204E] hover:scale-105 transition-all shadow-lg shadow-[#002A5C]/30 flex items-center gap-2">
-                View Selected Works <ChevronRight className="w-4 h-4" />
+              <a href="#portfolio" className="px-8 py-4 bg-[#002A5C] text-white rounded-xl font-semibold hover:bg-[#00204E] hover:scale-105 transition-all shadow-lg shadow-[#002A5C]/30 flex items-center gap-2 text-lg">
+                View Selected Works <ChevronRight className="w-5 h-5" />
               </a>
               
-              <a href="https://joelwiebe.ca" className="px-8 py-4 bg-white text-slate-700 border-2 border-slate-200 rounded-xl font-semibold hover:border-[#002A5C] hover:text-[#002A5C] transition-all shadow-sm hover:shadow-md flex items-center gap-2">
-                Visit Full Academic Profile <ExternalLink className="w-4 h-4" />
+              <a href="https://joelwiebe.ca" className="px-8 py-4 bg-white text-slate-700 border-2 border-slate-200 rounded-xl font-semibold hover:border-[#002A5C] hover:text-[#002A5C] transition-all shadow-sm hover:shadow-md flex items-center gap-2 text-lg">
+                Visit Full Academic Profile <ExternalLink className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -453,20 +500,20 @@ const Portfolio = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Professional Experience</h2>
-            <p className="text-slate-700 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-700 text-xl max-w-2xl mx-auto">
               A curated selection of projects spanning 8 years of software engineering, educational research, and robotics integration.
             </p>
           </div>
 
           {/* Search Option */}
           <div className="max-w-xl mx-auto mb-8 relative">
-            <Search className="absolute left-4 top-3.5 h-5 w-5 text-slate-400" />
+            <Search className="absolute left-4 top-3.5 h-6 w-6 text-slate-400" />
             <input 
               type="text"
               placeholder="Search projects by technology, title, or keywords..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#002A5C] focus:ring-2 focus:ring-[#002A5C]/20 outline-none transition-all text-base shadow-sm"
+              className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#002A5C] focus:ring-2 focus:ring-[#002A5C]/20 outline-none transition-all text-lg shadow-sm"
             />
           </div>
 
@@ -498,14 +545,11 @@ const Portfolio = () => {
                   <motion.div
                     key={project.id}
                     layout 
-                    // ANIMATION CONFIGURATION:
-                    // Removed 'scale' property to reduce vestibular triggers (jolting/nausea).
-                    // Slowed duration to 0.5s for a calmer effect.
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ 
-                      duration: shouldReduceMotion ? 0 : 0.5, // 0 if user OS prefers reduced motion
+                      duration: shouldReduceMotion ? 0 : 0.5, 
                       ease: "easeInOut" 
                     }}
                   >
@@ -519,7 +563,7 @@ const Portfolio = () => {
                 <motion.div 
                   initial={{ opacity: 0 }} 
                   animate={{ opacity: 1 }} 
-                  className="col-span-full text-center py-12 text-slate-500"
+                  className="col-span-full text-center py-12 text-slate-600 text-lg"
                 >
                   No projects found matching your search.
                 </motion.div>
@@ -537,10 +581,10 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-3 gap-12">
             <div className="md:col-span-2 bg-[#002A5C] text-white rounded-3xl p-8 md:p-12 shadow-xl">
               <h2 className="text-3xl font-bold text-white mb-6">Technical Leadership</h2>
-              <p className="text-slate-100 leading-relaxed mb-6 text-lg">
+              <p className="text-slate-100 leading-relaxed mb-6 text-xl">
                 I possess a unique dual background: <strong>Computer Science (B.Sc.)</strong> and <strong>Learning Sciences (PhD Candidate)</strong>. This allows me to build software that is not only technically robust but also pedagogically effective.
               </p>
-              <p className="text-slate-100 leading-relaxed mb-8 text-lg">
+              <p className="text-slate-100 leading-relaxed mb-8 text-xl">
                 My experience spans the entire stack: from complex backend systems and Robotics control interfaces to modern Cloud Architectures and AI Automation. I have a proven track record of adhering to AODA and OWASP standards within university contexts.
               </p>
               
@@ -573,7 +617,7 @@ const Portfolio = () => {
                   <div>
                     <p className="font-bold text-slate-900 text-lg">Ph.D. Candidate</p>
                     <p className="text-base text-[#002A5C] font-medium">OISE, University of Toronto</p>
-                    <p className="text-sm text-slate-600 mt-1">Curriculum & Pedagogy (Expected 2027)</p>
+                    <p className="text-base text-slate-600 mt-1">Curriculum & Pedagogy (Expected 2027)</p>
                   </div>
                   
                   <div className="w-full h-px bg-slate-200"></div>
@@ -581,7 +625,7 @@ const Portfolio = () => {
                   <div>
                     <p className="font-bold text-slate-900 text-lg">Master of Arts</p>
                     <p className="text-base text-[#002A5C] font-medium">OISE, University of Toronto</p>
-                    <p className="text-sm text-slate-600 mt-1">Curriculum & Pedagogy (2019)</p>
+                    <p className="text-base text-slate-600 mt-1">Curriculum & Pedagogy (2019)</p>
                   </div>
 
                   <div className="w-full h-px bg-slate-200"></div>
@@ -589,7 +633,7 @@ const Portfolio = () => {
                   <div>
                     <p className="font-bold text-slate-900 text-lg">Honours B.Sc., Computer Science</p>
                     <p className="text-base text-[#002A5C] font-medium">University of Toronto</p>
-                    <p className="text-sm text-slate-600 mt-1">AI, Software Engineering, Web-based Systems (2015)</p>
+                    <p className="text-base text-slate-600 mt-1">AI, Software Engineering, Web-based Systems (2015)</p>
                   </div>
                 </div>
               </div>
@@ -603,22 +647,34 @@ const Portfolio = () => {
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">Get In Touch</h2>
           <div className="flex justify-center gap-6 mb-12">
-            <a href="mailto:me@joelwiebe.ca" className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md hover:text-[#002A5C] transition-all border border-slate-200 text-slate-700 font-medium text-lg">
-              <Mail className="w-5 h-5" /> me@joelwiebe.ca
-            </a>
+            
+            <button 
+              onClick={handleCopyEmail}
+              className={`flex items-center gap-2 px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all border border-slate-200 font-medium text-lg
+                ${emailCopied 
+                  ? 'bg-green-100 text-green-700 border-green-200' 
+                  : 'bg-white text-slate-700 hover:text-[#002A5C]'
+                }`}
+              aria-live="polite" // Announces text change to screen readers
+            >
+              {emailCopied ? <Check className="w-5 h-5" /> : <Mail className="w-5 h-5" />} 
+              {emailCopied ? "Email Copied!" : "me@joelwiebe.ca"}
+            </button>
+
           </div>
 
           <div className="mb-12 border-t border-slate-200 pt-8">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Site Map</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Site Map</h3>
             <ul className="flex flex-wrap justify-center gap-6 text-slate-600">
-              <li><a href="#about" className="hover:text-[#002A5C] underline">About & Education</a></li>
-              <li><a href="#portfolio" className="hover:text-[#002A5C] underline">Project Portfolio</a></li>
-              <li><a href="#contact" className="hover:text-[#002A5C] underline">Contact Information</a></li>
-              <li><a href="https://joelwiebe.ca" className="hover:text-[#002A5C] underline">Academic Profile (External)</a></li>
+              <li><a href="#about" className="text-base hover:text-[#002A5C] underline">About & Education</a></li>
+              <li><a href="#portfolio" className="text-base hover:text-[#002A5C] underline">Project Portfolio</a></li>
+              <li><a href="#contact" className="text-base hover:text-[#002A5C] underline">Contact Information</a></li>
+              <li><a href="https://joelwiebe.ca" className="text-base hover:text-[#002A5C] underline">Academic Profile (External)</a></li>
+              <li><a href="/sitemap.xml" className="text-base hover:text-[#002A5C] underline">XML Sitemap</a></li>
             </ul>
           </div>
 
-          <div className="flex flex-col items-center gap-2 text-slate-500 text-sm">
+          <div className="flex flex-col items-center gap-2 text-slate-600 text-base">
             <div className="flex items-center gap-2">
                <Database className="w-4 h-4 text-[#002A5C]" />
                <span>Built with <strong>Laravel 10</strong> & <strong>React 18</strong></span>
