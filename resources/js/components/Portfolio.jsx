@@ -349,7 +349,18 @@ const Portfolio = () => {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    // Note: API implementation is commented out for this view, using static data.
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects'); // <--- This line triggers the network request
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) setProjects(data);
+        }
+      } catch (error) {
+        console.log('API unavailable, using static data.');
+      }
+    };
+    fetchProjects();
   }, []);
 
   useEffect(() => {
