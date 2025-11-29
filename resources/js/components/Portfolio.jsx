@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, BrowserRouter, useInRouterContext } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
   Code, 
@@ -10,19 +11,19 @@ import {
   Mail, 
   X, 
   ExternalLink, 
-  Menu,
-  Smartphone,
-  Users,
-  GraduationCap,
-  Rocket,
-  ChevronRight,
-  Play,
-  FileText,
-  Search,
-  Server,
-  Database,
+  Menu, 
+  Smartphone, 
+  Users, 
+  GraduationCap, 
+  Rocket, 
+  ChevronRight, 
+  Play, 
+  FileText, 
+  Search, 
+  Server, 
+  Database, 
   Check, 
-  Copy   
+  Lock 
 } from 'lucide-react';
 
 // --- Latest Resume Data ---
@@ -72,7 +73,8 @@ const PROJECTS = [
     role: "Architect",
     summary: "High-availability portfolio on OCI using Laravel and MySQL.",
     description: "Architected a personal portfolio using Laravel and MySQL hosted on Oracle Cloud Infrastructure (OCI). Demonstrates high-fidelity implementation of OWASP security controls, AODA-compliant accessible design, and performant CSS/JS animations, utilizing Eloquent ORM for robust data modeling.",
-    tags: ["Laravel", "MySQL", "OCI", "Nginx", "AODA", "OWASP"]
+    tags: ["Laravel", "MySQL", "OCI", "Nginx", "AODA", "OWASP"],
+    links: []
   },
   {
     id: 3,
@@ -105,7 +107,8 @@ const PROJECTS = [
     role: "Technical Consultant & Developer",
     summary: "Custom research platform for Toronto Metropolitan University.",
     description: "Consulted with faculty to identify platform needs for a specific research grant. Forked UC Berkeley's WISE project and rebranded it as 'Rehearsals'. Enabled experimental AI features and designed a custom data collection activity deployed to over 200 students, ensuring the platform met strict research objectives.",
-    tags: ["Java Spring", "Angular", "Research Design", "AI Integration", "Consulting"]
+    tags: ["Java Spring", "Angular", "Research Design", "AI Integration", "Consulting"],
+    links: []
   },
   {
     id: 5,
@@ -114,7 +117,8 @@ const PROJECTS = [
     role: "Technical Lead, Publications",
     summary: "Automation pipelines for proceedings and DSpace repositories.",
     description: "Global Technical Leadership for the International Society of the Learning Sciences. Engineered Python automation pipelines to process proceedings metadata, generate import packages for DSpace, and execute automated DOI registration via CrossRef. Developed a full-stack validation tool using Docker, Flask, and Jinja2 on Google Cloud.",
-    tags: ["Python", "DSpace", "Docker", "Flask", "Google Cloud", "CrossRef"]
+    tags: ["Python", "DSpace", "Docker", "Flask", "Google Cloud", "CrossRef"],
+    links: []
   },
   {
     id: 6,
@@ -123,7 +127,8 @@ const PROJECTS = [
     role: "Collaborator & Developer",
     summary: "Extended Java Spring/Angular codebase for international research.",
     description: "Forked and extended a complex Java Spring/Angular codebase to support international research. Deployed containerized environments using Docker and explored new applications of LLMs for knowledge integration guidance and assessment.",
-    tags: ["Java Spring", "Angular", "Docker", "LLMs", "Research"]
+    tags: ["Java Spring", "Angular", "Docker", "LLMs", "Research"],
+    links: []
   },
   {
     id: 14,
@@ -132,7 +137,8 @@ const PROJECTS = [
     role: "Robotics Developer",
     summary: "C++ Development for Darwin humanoid robot in FIRA HuroCup.",
     description: "Member of the Autonomous Agents Lab at the University of Manitoba. Developed C++ control software for the Darwin humanoid robot to compete in the FIRA HuroCup Marathon. Focused on computer vision integration and gait stability for autonomous navigation.",
-    tags: ["C++", "Robotics", "Computer Vision", "Autonomous Agents", "Darwin-OP"]
+    tags: ["C++", "Robotics", "Computer Vision", "Autonomous Agents", "Darwin-OP"],
+    links: []
   },
   {
     id: 15,
@@ -153,7 +159,8 @@ const PROJECTS = [
     role: "Educational Technology Researcher",
     summary: "Supporting remote presence robotics for Northern Saskatchewan nursing education.",
     description: "Supported faculty at the University of Saskatchewan in using remote presence robotics to deliver nurse training to remote northern regions. Performed observations and engaged in dialogue with faculty to optimize the use of robotics for productive pedagogical dialogue and lab training.",
-    tags: ["Telepresence", "Robotics", "Nursing Education", "Qualitative Observation", "Remote Learning"]
+    tags: ["Telepresence", "Robotics", "Nursing Education", "Qualitative Observation", "Remote Learning"],
+    links: []
   },
   {
     id: 7,
@@ -162,7 +169,8 @@ const PROJECTS = [
     role: "Technical Data Consultant",
     summary: "Automated assessment reporting workflow for Govt. of Nova Scotia.",
     description: "Designed a Python-based data curation and visualization workflow for Mount Saint Vincent University and the Government of Nova Scotia. The system generates automated assessment reports for Early Childhood Education Centers, supporting government quality assurance teams.",
-    tags: ["Python", "Data Visualization", "Consulting", "Automation"]
+    tags: ["Python", "Data Visualization", "Consulting", "Automation"],
+    links: []
   },
   {
     id: 8,
@@ -171,7 +179,8 @@ const PROJECTS = [
     role: "Robotics & Interface Developer",
     summary: "C#/WPF application for Microsoft Surface to control inspection robots.",
     description: "Designed a full-stack C#/WPF application for the Microsoft Surface tablet to control Inuktun inspection robot cameras and configurations. Implemented 3D animations to visualize robot body orientation and camera views in real-time.",
-    tags: ["C#", "WPF", "Robotics", "Microsoft Surface", "3D Animation"]
+    tags: ["C#", "WPF", "Robotics", "Microsoft Surface", "3D Animation"],
+    links: []
   },
   {
     id: 9,
@@ -180,7 +189,8 @@ const PROJECTS = [
     role: "Project Manager & Dev",
     summary: "Managed SharePoint workflows and institutional PHP website.",
     description: "Co-administered the College’s institutional PHP website and managed complex internal workflows using SharePoint (room bookings, document management). Sustained the technical use of ExamSoft and facilitated the adoption of electronic grading for OSCEs.",
-    tags: ["PHP", "SharePoint", "ExamSoft", "LMS", "Operations"]
+    tags: ["PHP", "SharePoint", "ExamSoft", "LMS", "Operations"],
+    links: []
   },
   {
     id: 10,
@@ -189,7 +199,8 @@ const PROJECTS = [
     role: "Wireless Application Developer",
     summary: "Java Server Pages (JSP) application with Hibernate ORM.",
     description: "Designed and deployed a Java Server Pages (JSP) application utilizing Servlets, JavaBeans, and Hibernate ORM for efficient MySQL data management. Implemented interactive front-ends using JavaScript and jQuery that integrated with server-side logic for push notifications.",
-    tags: ["Java", "JSP", "Hibernate ORM", "MySQL", "jQuery", "Enterprise"]
+    tags: ["Java", "JSP", "Hibernate ORM", "MySQL", "jQuery", "Enterprise"],
+    links: []
   }
 ];
 
@@ -250,6 +261,8 @@ const Modal = ({ project, onClose }) => {
                   <a 
                     key={link.url} 
                     href={link.url} 
+                    target="_blank" 
+                    rel="noreferrer"
                     className="flex items-center gap-2 text-[#002A5C] hover:text-[#00204E] font-medium transition-colors text-lg"
                   >
                     {link.url.includes("youtube") ? <Play className="w-5 h-5" aria-hidden="true" /> :
@@ -326,24 +339,24 @@ const ProjectCard = ({ project, onClick }) => {
   );
 };
 
-const NavLink = ({ href, children }) => (
-  <a 
-    href={href}
-    className="text-lg font-medium text-slate-700 transition-colors hover:text-[#002A5C]"
-  >
-    {children}
-  </a>
-);
+const NavLink = ({ href, children }) => {
+  const isInternal = href.startsWith('/');
+  const className = "text-lg font-medium text-slate-700 transition-colors hover:text-[#002A5C]";
+  
+  if (isInternal) {
+    return <Link to={href} className={className}>{children}</Link>;
+  }
+  return <a href={href} className={className}>{children}</a>;
+};
 
-const Portfolio = () => {
+const PortfolioContent = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  // Initialize with Data (No API Call needed for Single-File Version)
   const [projects, setProjects] = useState(PROJECTS);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  // New State for Email Copy
   const [emailCopied, setEmailCopied] = useState(false);
   
   const shouldReduceMotion = useReducedMotion();
@@ -351,13 +364,13 @@ const Portfolio = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('/api/projects'); // <--- This line triggers the network request
+        const response = await fetch('/api/projects');
         if (response.ok) {
           const data = await response.json();
           if (data && data.length > 0) setProjects(data);
         }
       } catch (error) {
-        console.log('API unavailable, using static data.');
+        // Fallback to static PROJECTS
       }
     };
     fetchProjects();
@@ -371,28 +384,20 @@ const Portfolio = () => {
 
   const handleCopyEmail = () => {
     const email = "me@joelwiebe.ca";
-    
-    // Fallback method for iframe/restricted environments where navigator.clipboard is blocked
     const textArea = document.createElement("textarea");
     textArea.value = email;
-    
-    // Ensure it's not visible on screen
     textArea.style.position = "fixed";
     textArea.style.left = "-9999px";
     textArea.style.top = "0";
-    
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
     
     try {
-      // Execute the copy command
       const successful = document.execCommand('copy');
       if(successful) {
         setEmailCopied(true);
         setTimeout(() => setEmailCopied(false), 2000);
-      } else {
-         console.error('Fallback copy command failed.');
       }
     } catch (err) {
       console.error('Fallback copy failed: ', err);
@@ -422,7 +427,6 @@ const Portfolio = () => {
         Skip to main content
       </a>
 
-      {/* Navigation */}
       <nav className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? 'bg-white shadow-sm py-4' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -434,8 +438,10 @@ const Portfolio = () => {
             <NavLink href="#about">About</NavLink>
             <NavLink href="#portfolio">Portfolio</NavLink>
             <NavLink href="#contact">Contact</NavLink>
-            
-            <a href="https://joelwiebe.ca" className="flex items-center gap-1 text-lg font-semibold text-[#002A5C] hover:text-[#00204E] transition-colors">
+            <Link to="/login" className="text-slate-400 hover:text-[#002A5C] transition-colors" title="Admin Access">
+                <Lock className="w-4 h-4" />
+            </Link>
+            <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="flex items-center gap-1 text-lg font-semibold text-[#002A5C] hover:text-[#00204E] transition-colors">
               Visit JoelWiebe.ca <ExternalLink className="w-4 h-4" aria-hidden="true" />
             </a>
           </div>
@@ -443,52 +449,47 @@ const Portfolio = () => {
           <button 
             className="md:hidden p-2" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"} // ACCESSIBILITY: Label Added
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {mobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-30 bg-white pt-24 px-6 md:hidden">
           <div className="flex flex-col gap-6 text-xl">
             <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
             <a href="#portfolio" onClick={() => setMobileMenuOpen(false)}>Portfolio</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-            <a href="https://joelwiebe.ca" className="text-[#002A5C] font-bold">Visit JoelWiebe.ca</a>
+            <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500">
+                <Lock className="w-4 h-4" /> Admin Login
+            </Link>
+            <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="text-[#002A5C] font-bold">Visit JoelWiebe.ca</a>
           </div>
         </div>
       )}
 
-      {/* Main Content Wrapper for Skip Link Target */}
       <main id="main-content">
-        
-        {/* Hero Section */}
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 overflow-hidden">
           <div className="absolute top-0 right-0 w-1/3 h-full bg-[#002A5C]/5 skew-x-12 transform translate-x-1/2 -z-10"></div>
           <div className="container mx-auto max-w-5xl">
             <div className="flex flex-col items-start max-w-3xl animate-slideUp">
-              
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-[#002A5C] text-lg font-medium mb-6">
                 <span className="w-2 h-2 rounded-full bg-[#002A5C] animate-pulse"></span>
                 Full Stack Developer | Technical Lead | AI Specialist
               </div>
-              
               <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-tight">
                 Bridging <span className="text-[#002A5C]">Learning Sciences</span> and <span className="text-[#002A5C]">Software Engineering</span>.
               </h1>
               <p className="text-xl text-slate-700 leading-relaxed mb-10 max-w-2xl">
                 With 8+ years of experience, I architect high-availability educational technologies and AI-augmented workflows. From complex backend systems to Azure PaaS, my work is technically rigorous and pedagogically grounded.
               </p>
-              
               <div className="flex flex-wrap gap-4 mb-8">
                 <a href="#portfolio" className="px-8 py-4 bg-[#002A5C] text-white rounded-xl font-semibold hover:bg-[#00204E] hover:scale-105 transition-all shadow-lg shadow-[#002A5C]/30 flex items-center gap-2 text-lg">
                   View Selected Works <ChevronRight className="w-5 h-5" aria-hidden="true" />
                 </a>
-                
-                <a href="https://joelwiebe.ca" className="px-8 py-4 bg-white text-slate-700 border-2 border-slate-200 rounded-xl font-semibold hover:border-[#002A5C] hover:text-[#002A5C] transition-all shadow-sm hover:shadow-md flex items-center gap-2 text-lg">
+                <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="px-8 py-4 bg-white text-slate-700 border-2 border-slate-200 rounded-xl font-semibold hover:border-[#002A5C] hover:text-[#002A5C] transition-all shadow-sm hover:shadow-md flex items-center gap-2 text-lg">
                   Visit Full Academic Profile <ExternalLink className="w-5 h-5" aria-hidden="true" />
                 </a>
               </div>
@@ -496,7 +497,6 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* Stats/Skills Strip */}
         <div className="border-y border-slate-200 bg-white">
           <div className="container mx-auto px-6 py-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -515,7 +515,6 @@ const Portfolio = () => {
           </div>
         </div>
 
-        {/* Portfolio Section */}
         <section id="portfolio" className="py-24 px-6 bg-slate-50">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-10">
@@ -525,7 +524,6 @@ const Portfolio = () => {
               </p>
             </div>
 
-            {/* Search Option */}
             <div className="max-w-xl mx-auto mb-8 relative">
               <label htmlFor="project-search" className="sr-only">Search projects</label>
               <Search className="absolute left-4 top-3.5 h-6 w-6 text-slate-400" aria-hidden="true" />
@@ -539,7 +537,6 @@ const Portfolio = () => {
               />
             </div>
 
-            {/* Filters */}
             <div className="flex flex-wrap justify-center gap-2 mb-12">
               {CATEGORIES.map(cat => (
                 <button
@@ -556,7 +553,6 @@ const Portfolio = () => {
               ))}
             </div>
 
-            {/* Animated Grid */}
             <motion.div 
               layout 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -595,11 +591,9 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* About / Context Section */}
         <section id="about" className="py-24 px-6 bg-white relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none" style={{ backgroundImage: 'url(https://www.transparenttextures.com/patterns/cubes.png)' }}></div>
           <div className="container mx-auto max-w-5xl relative z-10">
-            
             <div className="grid md:grid-cols-3 gap-12">
               <div className="md:col-span-2 bg-[#002A5C] text-white rounded-3xl p-8 md:p-12 shadow-xl">
                 <h2 className="text-3xl font-bold text-white mb-6">Technical Leadership</h2>
@@ -664,12 +658,10 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* Contact & Site Map */}
         <footer id="contact" className="bg-slate-50 py-16 px-6 border-t border-slate-200">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-2xl font-bold text-slate-900 mb-8">Get In Touch</h2>
             <div className="flex justify-center gap-6 mb-12">
-              
               <button 
                 onClick={handleCopyEmail}
                 className={`flex items-center gap-2 px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all border border-slate-200 font-medium text-lg
@@ -677,12 +669,11 @@ const Portfolio = () => {
                     ? 'bg-green-100 text-green-700 border-green-200' 
                     : 'bg-white text-slate-700 hover:text-[#002A5C]'
                   }`}
-                aria-live="polite" // Announces text change to screen readers
+                aria-live="polite"
               >
                 {emailCopied ? <Check className="w-5 h-5" aria-hidden="true" /> : <Mail className="w-5 h-5" aria-hidden="true" />} 
                 {emailCopied ? "Email Copied!" : "me@joelwiebe.ca"}
               </button>
-
             </div>
 
             <div className="mb-12 border-t border-slate-200 pt-8">
@@ -707,7 +698,6 @@ const Portfolio = () => {
         </footer>
       </main>
 
-      {/* Modal Overlay */}
       {selectedProject && (
         <Modal project={selectedProject} onClose={() => setSelectedProject(null)} />
       )}
@@ -726,6 +716,26 @@ const Portfolio = () => {
       `}</style>
     </div>
   );
+};
+
+const Portfolio = () => {
+    // Check if we are already inside a Router (like in the real App)
+    let hasRouter = false;
+    try {
+        hasRouter = useInRouterContext();
+    } catch (e) {
+        hasRouter = false;
+    }
+
+    if (!hasRouter) {
+        return (
+            <BrowserRouter>
+                <PortfolioContent />
+            </BrowserRouter>
+        );
+    }
+
+    return <PortfolioContent />;
 };
 
 export default Portfolio;
