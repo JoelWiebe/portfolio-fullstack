@@ -1,10 +1,15 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 test('it requires a title to create a project', function () {
+    // Arrange: Create and authenticate a user
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
     // Arrange: Prepare data without a title
     $projectData = [
         'role' => 'Test Role',
