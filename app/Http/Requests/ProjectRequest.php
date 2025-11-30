@@ -11,9 +11,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // In the future, we will return auth()->check() here.
-        // For now, return true to allow testing.
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -30,8 +28,9 @@ class ProjectRequest extends FormRequest
             'tags' => 'required|array',
             'links' => 'nullable|array',
             // Validate internal structure of links array
-            'links.*.label' => 'required_with:links|string',
+            'links.*.name' => 'required_with:links|string',
             'links.*.url' => 'required_with:links|url',
+            'image' => 'nullable|string|url',
         ];
     }
 }
