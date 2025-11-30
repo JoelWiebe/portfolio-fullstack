@@ -209,7 +209,7 @@ const CATEGORIES = ["All", "Full Stack Ed-Tech", "AI & Analytics", "Cloud & DevO
 // --- Components ---
 
 const Badge = ({ children, className = "" }) => (
-  <span className={`px-3 py-1 text-base font-medium rounded-full bg-slate-100 text-[#002A5C] border border-slate-200 ${className}`}>
+  <span className={`px-3 py-1 text-base font-medium rounded-full bg-slate-100 text-primary border border-slate-200 ${className}`}>
     {children}
   </span>
 );
@@ -240,7 +240,7 @@ const Modal = ({ project, onClose }) => {
           <div className="mb-6">
             <div className="flex gap-2 mb-2 flex-wrap">
               {project.categories.map(cat => (
-                 <span key={cat} className="text-[#002A5C] font-semibold tracking-wider text-base uppercase block">
+                 <span key={cat} className="text-primary font-semibold tracking-wider text-base uppercase block">
                   {cat}
                 </span>
               ))}
@@ -263,7 +263,7 @@ const Modal = ({ project, onClose }) => {
                     href={link.url} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="flex items-center gap-2 text-[#002A5C] hover:text-[#00204E] font-medium transition-colors text-lg"
+                    className="flex items-center gap-2 text-primary hover:text-primary-700 font-medium transition-colors text-lg"
                   >
                     {link.url.includes("youtube") ? <Play className="w-5 h-5" aria-hidden="true" /> :
                      link.url.includes("doi.org") || link.url.includes("ieeexplore") ? <FileText className="w-5 h-5" aria-hidden="true" /> : 
@@ -281,7 +281,7 @@ const Modal = ({ project, onClose }) => {
             <h3 className="text-base font-semibold text-slate-900 uppercase tracking-wide mb-4">Technologies & Skills</h3>
             <div className="flex flex-wrap gap-2">
               {project.tags.map(tag => (
-                <Badge key={tag} className="bg-slate-100 text-[#002A5C] border-slate-200">
+                <Badge key={tag} className="bg-slate-100 text-primary border-slate-200">
                   {tag}
                 </Badge>
               ))}
@@ -299,12 +299,12 @@ const ProjectCard = ({ project, onClick }) => {
     <button 
       type="button"
       onClick={() => onClick(project)}
-      className="w-full text-left group bg-white rounded-xl border border-slate-400 hover:border-[#002A5C] hover:shadow-lg hover:shadow-[#002A5C]/10 transition-all duration-300 cursor-pointer flex flex-col h-full overflow-hidden focus:outline-none focus:ring-4 focus:ring-[#002A5C]/50"
+      className="w-full text-left group bg-white rounded-xl border border-slate-400 hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer flex flex-col h-full overflow-hidden focus:outline-none focus:ring-4 focus:ring-primary/50"
     >
       <div className="p-6 flex flex-col h-full w-full">
         <div className="flex justify-between items-start mb-4">
           <div className="p-2 bg-slate-100 rounded-lg group-hover:bg-slate-200 transition-colors">
-            {mainCat.includes("Robotics") ? <Cpu className="w-6 h-6 text-[#002A5C]" aria-hidden="true" /> :
+            {mainCat.includes("Robotics") ? <Cpu className="w-6 h-6 text-primary" aria-hidden="true" /> :
              mainCat.includes("AI") ? <Brain className="w-6 h-6 text-[#002A5C]" aria-hidden="true" /> :
              mainCat.includes("Research") ? <BookOpen className="w-6 h-6 text-[#002A5C]" aria-hidden="true" /> :
              mainCat.includes("Public") ? <Users className="w-6 h-6 text-[#002A5C]" aria-hidden="true" /> :
