@@ -157,11 +157,11 @@ const AdminDashboardContent = () => {
             <nav className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-10">
                 <div className="max-w-6xl mx-auto flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                        <div className="bg-indigo-600 text-white p-2 rounded-lg font-bold">Admin</div>
+                        <div className="bg-primary-600 text-white p-2 rounded-lg font-bold">Admin</div>
                         <h1 className="text-xl font-bold text-slate-800">Project Console</h1>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link to="/" className="text-sm font-medium text-slate-600 hover:text-indigo-600">
+                        <Link to="/" className="text-sm font-medium text-slate-600 hover:text-primary-600">
                             View Live Site
                         </Link>
                         <button 
@@ -183,7 +183,7 @@ const AdminDashboardContent = () => {
                         <h2 className="text-2xl font-bold text-slate-900">Portfolio Projects</h2>
                         <p className="text-slate-500">Manage your featured work.</p>
                     </div>
-                    <button onClick={handleCreateClick} className="flex items-center gap-2 px-5 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20">
+                    <button onClick={handleCreateClick} className="flex items-center gap-2 px-5 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20">
                         <Plus className="w-5 h-5" /> Add New Project
                     </button>
                 </div>
@@ -230,7 +230,7 @@ const AdminDashboardContent = () => {
                                         <td className="p-4 text-sm text-slate-600">{project.role}</td>
                                         <td className="p-4 text-right">
                                             <div className="flex justify-end gap-2">
-                                                <button onClick={() => handleEditClick(project)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
+                                                <button onClick={() => handleEditClick(project)} className="p-2 text-slate-400 hover:text-primary-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
                                                     <Edit className="w-4 h-4" />
                                                 </button>
                                                 <button 
