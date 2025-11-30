@@ -8,11 +8,14 @@ import {
   Search, 
   AlertTriangle 
 } from 'lucide-react';
+import ProjectForm from './ProjectForm';
 
 const AdminDashboardContent = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [editingProject, setEditingProject] = useState(null);
     const navigate = useNavigate();
 
     // Fetch Projects on Load
@@ -21,15 +24,67 @@ const AdminDashboardContent = () => {
     }, []);
 
     const fetchProjects = async () => {
+        setLoading(true);
         try {
-            const response = await fetch('/api/projects');
+            const token = localStorage.getItem('portfolio_token');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+
+            const response = await fetch('/api/projects', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                }
+            });
+
+            if (response.status === 401) {
+                localStorage.removeItem('portfolio_token');
+                navigate('/login');
+                throw new Error('Session expired. Please login again.');
+            }
+
             if (!response.ok) throw new Error('Failed to fetch projects');
+            
             const data = await response.json();
             setProjects(data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unexpected error occurred');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSave = async (projectData) => {
+        const isEditing = !!editingProject;
+        const url = isEditing ? `/api/projects/${editingProject.id}` : '/api/projects';
+        const method = isEditing ? 'PUT' : 'POST';
+
+        try {
+            const token = localStorage.getItem('portfolio_token');
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(projectData),
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData.message || 'Failed to save project';
+                // You might want to display this error in the UI
+                throw new Error(errorMessage);
+            }
+
+            setIsFormVisible(false);
+            setEditingProject(null);
+            fetchProjects(); // Refresh the list
+        } catch (err) {
+            alert('Error saving project: ' + (err instanceof Error ? err.message : 'Unknown error'));
         }
     };
 
@@ -73,8 +128,31 @@ const AdminDashboardContent = () => {
         navigate('/login');
     };
 
+    const handleCreateClick = () => {
+        setEditingProject(null);
+        setIsFormVisible(true);
+    };
+
+    const handleEditClick = (project) => {
+        setEditingProject(project);
+        setIsFormVisible(true);
+    };
+
+    const handleCancelClick = () => {
+        setIsFormVisible(false);
+        setEditingProject(null);
+    };
+
     return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+            {isFormVisible && (
+                <ProjectForm 
+                    project={editingProject} 
+                    onSave={handleSave} 
+                    onCancel={handleCancelClick} 
+                />
+            )}
+
             {/* Admin Header */}
             <nav className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-10">
                 <div className="max-w-6xl mx-auto flex justify-between items-center">
@@ -105,7 +183,7 @@ const AdminDashboardContent = () => {
                         <h2 className="text-2xl font-bold text-slate-900">Portfolio Projects</h2>
                         <p className="text-slate-500">Manage your featured work.</p>
                     </div>
-                    <button className="flex items-center gap-2 px-5 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20">
+                    <button onClick={handleCreateClick} className="flex items-center gap-2 px-5 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20">
                         <Plus className="w-5 h-5" /> Add New Project
                     </button>
                 </div>
@@ -152,7 +230,7 @@ const AdminDashboardContent = () => {
                                         <td className="p-4 text-sm text-slate-600">{project.role}</td>
                                         <td className="p-4 text-right">
                                             <div className="flex justify-end gap-2">
-                                                <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
+                                                <button onClick={() => handleEditClick(project)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
                                                     <Edit className="w-4 h-4" />
                                                 </button>
                                                 <button 
