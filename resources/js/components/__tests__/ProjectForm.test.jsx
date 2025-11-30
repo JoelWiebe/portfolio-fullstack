@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, test, expect, vi } from 'vitest';
 import ProjectForm from '../ProjectForm';
 import '@testing-library/jest-dom';
 
@@ -46,94 +47,100 @@ describe('ProjectForm', () => {
     });
 
     // Test 3: Input change handling
-    test('updates state when user types in text fields', () => {
+    test('updates state when user types in text fields', async () => {
+        const user = userEvent.setup();
         const handleSave = vi.fn();
         const handleCancel = vi.fn();
         render(<ProjectForm onSave={handleSave} onCancel={handleCancel} />);
         
         const titleInput = screen.getByLabelText('Project Title');
-        fireEvent.change(titleInput, { target: { value: 'New Title' } });
+        await user.type(titleInput, 'New Title');
         expect(titleInput).toHaveValue('New Title');
     });
 
     // Test 4: Category management
-    test('allows adding and removing categories', () => {
+    test('allows adding and removing categories', async () => {
+        const user = userEvent.setup();
         render(<ProjectForm onSave={vi.fn()} onCancel={vi.fn()} />);
-        const categoryInput = screen.getByPlaceholderText('e.g., Web Development');
-        const addCategoryBtn = screen.getByRole('button', { name: /Add/i });
+        const categoryInput = screen.getByLabelText('Categories');
+        const addCategoryBtn = screen.getByRole('button', { name: 'Add Category' });
 
         // Add
-        fireEvent.change(categoryInput, { target: { value: 'Frontend' } });
-        fireEvent.click(addCategoryBtn);
+        await user.type(categoryInput, 'Frontend');
+        await user.click(addCategoryBtn);
         expect(screen.getByText('Frontend')).toBeInTheDocument();
         expect(categoryInput).toHaveValue('');
-
+ 
         // Remove
-        const removeBtn = screen.getByRole('button', { name: /remove category/i }); // Assuming Lucide's X has no accessible name
-        fireEvent.click(removeBtn);
+        const removeBtn = screen.getByRole('button', { name: /remove Frontend/i });
+        await user.click(removeBtn);
         expect(screen.queryByText('Frontend')).not.toBeInTheDocument();
     });
 
     // Test 5: Tag management
-    test('allows adding and removing tags', () => {
+    test('allows adding and removing tags', async () => {
+        const user = userEvent.setup();
         render(<ProjectForm onSave={vi.fn()} onCancel={vi.fn()} />);
-        const tagInput = screen.getByPlaceholderText('e.g., React, Laravel, API');
-        const addTagBtn = screen.getAllByRole('button', { name: /Add/i })[1]; // second add button
+        const tagInput = screen.getByLabelText('Tags');
+        const addTagBtn = screen.getByRole('button', { name: 'Add Tag' });
 
         // Add
-        fireEvent.change(tagInput, { target: { value: 'JavaScript' } });
-        fireEvent.click(addTagBtn);
+        await user.type(tagInput, 'JavaScript');
+        await user.click(addTagBtn);
         expect(screen.getByText('JavaScript')).toBeInTheDocument();
         expect(tagInput).toHaveValue('');
-
+ 
         // Remove
-        const removeBtn = screen.getByRole('button', { name: /remove tag/i });
-        fireEvent.click(removeBtn);
+        const removeBtn = screen.getByRole('button', { name: /remove JavaScript/i });
+        await user.click(removeBtn);
         expect(screen.queryByText('JavaScript')).not.toBeInTheDocument();
     });
 
     // Test 6: Link management
-    test('allows adding and removing links', () => {
+    test('allows adding and removing links', async () => {
+        const user = userEvent.setup();
         render(<ProjectForm onSave={vi.fn()} onCancel={vi.fn()} />);
-        const nameInput = screen.getByPlaceholderText('Link Name (e.g., Live Demo)');
-        const urlInput = screen.getByPlaceholderText('https://...');
-        const addLinkBtn = screen.getAllByRole('button', { name: /Add/i }).find(btn => btn.textContent.includes('Add'));
-
+        const nameInput = screen.getByLabelText('Link Name');
+        const urlInput = screen.getByLabelText('Link URL');
+        const addLinkBtn = screen.getByRole('button', { name: 'Add Link' });
+ 
 
         // Add
-        fireEvent.change(nameInput, { target: { value: 'My Blog' } });
-        fireEvent.change(urlInput, { target: { value: 'https://blog.example.com' } });
-        fireEvent.click(addLinkBtn);
+        await user.type(nameInput, 'My Blog');
+        await user.type(urlInput, 'https://blog.example.com');
+        await user.click(addLinkBtn);
         
         expect(screen.getByText('My Blog:')).toBeInTheDocument();
         expect(screen.getByText('https://blog.example.com')).toBeInTheDocument();
         expect(nameInput).toHaveValue('');
         expect(urlInput).toHaveValue('');
 
-        // Remove
-        const removeBtn = screen.getByRole('button', { name: /remove link/i });
-        fireEvent.click(removeBtn);
+        // Remove 
+        const removeBtn = screen.getByRole('button', { name: /remove My Blog/i });
+        await user.click(removeBtn);
         expect(screen.queryByText('My Blog:')).not.toBeInTheDocument();
     });
 
     // Test 7: Cancel button
-    test('calls onCancel when the cancel button is clicked', () => {
+    test('calls onCancel when the cancel button is clicked', async () => {
+        const user = userEvent.setup();
         const handleCancel = vi.fn();
         render(<ProjectForm onSave={vi.fn()} onCancel={handleCancel} />);
         
-        fireEvent.click(screen.getByText('Cancel'));
+        await user.click(screen.getByText('Cancel'));
         expect(handleCancel).toHaveBeenCalledTimes(1);
     });
 
     // Test 8: Submit button in 'Create' mode
-    test('calls onSave with the form data when creating a new project', () => {
+    test('calls onSave with the form data when creating a new project', async () => {
+        const user = userEvent.setup();
         const handleSave = vi.fn();
         render(<ProjectForm onSave={handleSave} onCancel={vi.fn()} />);
 
-        fireEvent.change(screen.getByLabelText('Project Title'), { target: { value: 'Final Project' } });
-        fireEvent.change(screen.getByLabelText('Summary / Subtitle'), { target: { value: 'Final Summary' } });
+        await user.type(screen.getByLabelText('Project Title'), 'Final Project');
+        await user.type(screen.getByLabelText('Summary / Subtitle'), 'Final Summary');
 
-        fireEvent.click(screen.getByText('Create Project'));
+        await user.click(screen.getByText('Create Project'));
 
         expect(handleSave).toHaveBeenCalledTimes(1);
         expect(handleSave).toHaveBeenCalledWith(expect.objectContaining({
@@ -146,14 +153,16 @@ describe('ProjectForm', () => {
     });
     
     // Test 9: Submit button in 'Edit' mode
-    test('calls onSave with updated form data when editing a project', () => {
+    test('calls onSave with updated form data when editing a project', async () => {
+        const user = userEvent.setup();
         const handleSave = vi.fn();
         render(<ProjectForm project={mockProject} onSave={handleSave} onCancel={vi.fn()} />);
 
         const titleInput = screen.getByLabelText('Project Title');
-        fireEvent.change(titleInput, { target: { value: 'Updated Test Project' } });
+        await user.clear(titleInput);
+        await user.type(titleInput, 'Updated Test Project');
         
-        fireEvent.click(screen.getByText('Save Changes'));
+        await user.click(screen.getByText('Save Changes'));
 
         expect(handleSave).toHaveBeenCalledTimes(1);
         expect(handleSave).toHaveBeenCalledWith(expect.objectContaining({

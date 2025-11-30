@@ -83,20 +83,22 @@ describe('AdminDashboard CRUD functionality', () => {
         // Wait for initial projects to load
         await waitFor(() => expect(screen.getByText('Project One')).toBeInTheDocument());
         
-        // Mock the POST request for creation
-        window.fetch.mockImplementationOnce((url, options) => {
-            if (options.method === 'POST') {
-                return Promise.resolve({
-                    ok: true,
-                    json: () => Promise.resolve({ id: 3, title: 'New Mock Project' }),
-                });
-            }
-            // For the subsequent refresh fetch
-            return Promise.resolve({
+        // Mock the POST request for creation...
+        vi.spyOn(window, 'fetch')
+            .mockImplementationOnce((url, options) => {
+                if (options.method === 'POST') {
+                    return Promise.resolve({
+                        ok: true,
+                        json: () => Promise.resolve({ id: 3, title: 'New Mock Project' }),
+                    });
+                }
+                return Promise.reject(new Error('First call was not a POST'));
+            })
+            // ...and then mock the subsequent GET request to refresh the list.
+            .mockImplementationOnce(() => Promise.resolve({
                 ok: true,
                 json: () => Promise.resolve([...mockProjects, { id: 3, title: 'New Mock Project' }]),
-            });
-        });
+            }));
 
         // Click "Add New Project"
         await user.click(screen.getByRole('button', { name: /Add New Project/i }));
@@ -126,20 +128,22 @@ describe('AdminDashboard CRUD functionality', () => {
 
         const updatedProject = { ...mockProjects[0], title: 'Project One Updated' };
 
-        // Mock the PUT request for update
-        window.fetch.mockImplementationOnce((url, options) => {
-             if (options.method === 'PUT' && url.toString().includes(`/api/projects/${mockProjects[0].id}`)) {
-                return Promise.resolve({
-                    ok: true,
-                    json: () => Promise.resolve(updatedProject),
-                });
-            }
-             // For the subsequent refresh fetch
-            return Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve([updatedProject, mockProjects[1]]),
-            });
-        });
+        // Mock the PUT request for update...
+        vi.spyOn(window, 'fetch')
+            .mockImplementationOnce((url, options) => {
+                if (options.method === 'PUT' && url.toString().includes(`/api/projects/${mockProjects[0].id}`)) {
+                    return Promise.resolve({
+                        ok: true,
+                        json: () => Promise.resolve(updatedProject),
+                    });
+                }
+                return Promise.reject(new Error('First call was not a PUT to the correct URL'));
+            })
+            // ...and then mock the subsequent GET request to refresh the list.
+            .mockImplementationOnce(() => Promise.resolve({
+                 ok: true,
+                 json: () => Promise.resolve([updatedProject, mockProjects[1]]),
+            }));
 
         // Click the first "Edit" button
         await user.click(screen.getAllByTitle('Edit')[0]);
@@ -167,17 +171,16 @@ describe('AdminDashboard CRUD functionality', () => {
 
         await waitFor(() => expect(screen.getByText('Project One')).toBeInTheDocument());
 
-        // Mock the DELETE request
-        window.fetch.mockImplementationOnce((url, options) => {
-            if (options.method === 'DELETE' && url.toString().includes(`/api/projects/${mockProjects[0].id}`)) {
-                return Promise.resolve({ ok: true });
-            }
-            // For the subsequent refresh fetch
-             return Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve([mockProjects[1]]),
-            });
-        });
+        // Mock the DELETE request...
+        vi.spyOn(window, 'fetch')
+            .mockImplementationOnce((url, options) => {
+                if (options.method === 'DELETE' && url.toString().includes(`/api/projects/${mockProjects[0].id}`)) {
+                    return Promise.resolve({ ok: true });
+                }
+                return Promise.reject(new Error('First call was not a DELETE to the correct URL'));
+            })
+            // ...and then mock the subsequent GET request to refresh the list.
+            .mockImplementationOnce(() => Promise.resolve({ ok: true, json: () => Promise.resolve([mockProjects[1]]) }));
         
         // Click the first "Delete" button
         await user.click(screen.getAllByTitle('Delete')[0]);

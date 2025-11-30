@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash2 } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 
 const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
     const isEditing = Boolean(initialProject);
@@ -107,7 +107,7 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
                 <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                     <h2 className="text-xl font-bold text-slate-800">{isEditing ? 'Edit Project' : 'Create New Project'}</h2>
-                    <button onClick={onCancel} className="p-2 rounded-full hover:bg-slate-100">
+                    <button type="button" onClick={onCancel} className="p-2 rounded-full hover:bg-slate-100" aria-label="Close form">
                         <X className="w-5 h-5 text-slate-600" />
                     </button>
                 </div>
@@ -131,15 +131,29 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
 
                         {/* Categories */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Categories</label>
+                            <label htmlFor="category-input" className="block text-sm font-medium text-slate-700 mb-1">Categories</label>
                             <div className="flex items-center gap-2 mb-2">
-                                <input type="text" value={categoryInput} onChange={e => setCategoryInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addCategory())} className="flex-grow px-3 py-2 border border-slate-300 rounded-md shadow-sm text-sm" placeholder="e.g., Web Development" />
-                                <button type="button" onClick={addCategory} className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200"><Plus className="w-4 h-4 inline-block mr-1"/>Add</button>
+                                <input
+                                    id="category-input"
+                                    type="text"
+                                    value={categoryInput}
+                                    onChange={e => setCategoryInput(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addCategory())}
+                                    className="flex-grow px-3 py-2 border border-slate-300 rounded-md shadow-sm text-sm"
+                                    placeholder="e.g., Web Development"
+                                />
+                                <button type="button" onClick={addCategory} aria-label="Add Category" className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200">
+                                    <Plus className="w-4 h-4 inline-block mr-1" aria-hidden="true" />
+                                    Add
+                                </button>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {project.categories.map(cat => (
-                                    <span key={cat} className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md text-sm">
-                                        {cat} <button type="button" onClick={() => removeCategory(cat)}><X className="w-3 h-3"/></button>
+                                    <span key={cat} className="flex items-center gap-2 bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-sm">
+                                        {cat}
+                                        <button type="button" onClick={() => removeCategory(cat)} aria-label={`Remove ${cat}`}>
+                                            <X className="w-3 h-3" />
+                                        </button>
                                     </span>
                                 ))}
                             </div>
@@ -147,15 +161,29 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
                         
                         {/* Tags */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Tags</label>
+                            <label htmlFor="tag-input" className="block text-sm font-medium text-slate-700 mb-1">Tags</label>
                             <div className="flex items-center gap-2 mb-2">
-                                <input type="text" value={tagInput} onChange={e => setTagInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())} className="flex-grow px-3 py-2 border border-slate-300 rounded-md shadow-sm text-sm" placeholder="e.g., React, Laravel, API" />
-                                <button type="button" onClick={addTag} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-200"><Plus className="w-4 h-4 inline-block mr-1"/>Add</button>
+                                <input
+                                    id="tag-input"
+                                    type="text"
+                                    value={tagInput}
+                                    onChange={e => setTagInput(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                                    className="flex-grow px-3 py-2 border border-slate-300 rounded-md shadow-sm text-sm"
+                                    placeholder="e.g., React, Laravel, API"
+                                />
+                                <button type="button" onClick={addTag} aria-label="Add Tag" className="px-4 py-2 bg-slate-100 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-200">
+                                    <Plus className="w-4 h-4 inline-block mr-1" aria-hidden="true" />
+                                    Add
+                                </button>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {project.tags.map(tag => (
                                     <span key={tag} className="flex items-center gap-2 bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-sm">
-                                        {tag} <button type="button" onClick={() => removeTag(tag)}><X className="w-3 h-3"/></button>
+                                        {tag}
+                                        <button type="button" onClick={() => removeTag(tag)} aria-label={`Remove ${tag}`}>
+                                            <X className="w-3 h-3" />
+                                        </button>
                                     </span>
                                 ))}
                             </div>
@@ -167,18 +195,37 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
                             <div className="space-y-2 mb-3">
                                 {project.links.map((link, index) => (
                                     <div key={index} className="flex items-center gap-2 p-2 bg-slate-50 rounded-md">
-                                        <div className="flex-grow text-sm">
+                                        <div className="flex-grow">
                                             <span className="font-semibold text-slate-800">{link.name}: </span>
-                                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline truncate">{link.url}</a>
+                                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="ml-2 text-indigo-600 hover:underline text-sm break-all">{link.url}</a>
                                         </div>
-                                        <button type="button" onClick={() => removeLink(index)} className="p-1 text-red-500 hover:bg-red-100 rounded-full"><Trash2 className="w-4 h-4"/></button>
+                                        <button type="button" onClick={() => removeLink(index)} aria-label={`Remove ${link.name}`}>
+                                            <X className="w-4 h-4 text-slate-500" />
+                                        </button>
                                     </div>
                                 ))}
                             </div>
                             <div className="flex items-center gap-2 p-2 border border-dashed border-slate-300 rounded-lg">
-                                <input type="text" value={linkInput.name} onChange={e => setLinkInput({ ...linkInput, name: e.target.value })} className="w-1/3 px-3 py-2 border border-slate-300 rounded-md text-sm" placeholder="Link Name (e.g., Live Demo)" />
-                                <input type="url" value={linkInput.url} onChange={e => setLinkInput({ ...linkInput, url: e.target.value })} className="flex-grow px-3 py-2 border border-slate-300 rounded-md text-sm" placeholder="https://..." />
-                                <button type="button" onClick={addLink} className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200"><Plus className="w-4 h-4 inline-block mr-1"/>Add</button>
+                                <input
+                                    type="text"
+                                    aria-label="Link Name"
+                                    value={linkInput.name}
+                                    onChange={e => setLinkInput({ ...linkInput, name: e.target.value })}
+                                    className="w-1/3 px-3 py-2 border border-slate-300 rounded-md text-sm"
+                                    placeholder="Link Name (e.g., Live Demo)"
+                                />
+                                <input
+                                    type="url"
+                                    aria-label="Link URL"
+                                    value={linkInput.url}
+                                    onChange={e => setLinkInput({ ...linkInput, url: e.target.value })}
+                                    className="flex-grow px-3 py-2 border border-slate-300 rounded-md text-sm"
+                                    placeholder="https://..."
+                                />
+                                <button type="button" onClick={addLink} aria-label="Add Link" className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200">
+                                    <Plus className="w-4 h-4 inline-block mr-1" aria-hidden="true" />
+                                    Add
+                                </button>
                             </div>
                         </div>
                     </div>
