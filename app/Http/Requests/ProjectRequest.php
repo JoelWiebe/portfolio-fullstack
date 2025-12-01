@@ -21,16 +21,20 @@ class ProjectRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
-            'summary' => 'required|string',
-            'description' => 'required|string',
-            'categories' => 'required|array',
-            'tags' => 'required|array',
+            'summary' => 'required|string|max:500',
+            'description' => 'nullable|string',
+            'role' => 'nullable|string|max:255',
+            'image_url' => 'nullable|url',
+            'url_repo' => 'nullable|url',
+            'url_web' => 'nullable|url',
+            'url_ios' => 'nullable|url',
+            'url_android' => 'nullable|url',
+            'categories' => 'nullable|array',
+            'tags' => 'nullable|array',
             'links' => 'nullable|array',
             // Validate internal structure of links array
             'links.*.name' => 'required_with:links|string',
             'links.*.url' => 'required_with:links|url',
-            'image' => 'nullable|string|url',
         ];
     }
 }

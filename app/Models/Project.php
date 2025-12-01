@@ -10,8 +10,9 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'role', 'summary', 'description', 
-        'categories', 'tags', 'links', 'image'
+        'title', 'summary', 'description', 'role', 
+        'image_url', 'url_repo', 'url_web', 'url_ios', 'url_android',
+        'categories', 'tags', 'links'
     ];
 
     // Automatically convert JSON from DB to PHP Arrays

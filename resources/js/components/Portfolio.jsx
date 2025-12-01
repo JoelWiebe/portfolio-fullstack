@@ -19,7 +19,7 @@ import {
   ChevronRight, 
   Play, 
   FileText, 
-  Search, 
+  Search,
   Server, 
   Database, 
   Check, 
@@ -27,271 +27,13 @@ import {
 } from 'lucide-react';
 
 // --- Latest Resume Data ---
-const PROJECTS = [
-  {
-    id: 1,
-    title: "AI Theme Analyser",
-    categories: ["AI & Analytics", "Research & Pedagogy"],
-    role: "Lead Developer",
-    summary: "Human-in-the-Loop tools for qualitative research using Vertex AI.",
-    description: "Developed 'Human-in-the-Loop' (HitL) tools for qualitative research. Created a Thematic Analysis engine that performs coding, theme generation, magnitude coding, cross-case reporting, and automated theme map visualization. \n\nMethodology published in: Wiebe, J. P., Khan, R., Burns, S., & Slotta, J. D. (2025). Qualitative Research in the Age of LLMs: A Human-in-the-Loop Approach to Hybrid Thematic Analysis. ICLS 2025.",
-    tags: ["Python", "Vertex AI", "LLMs", "HitL Workflows", "Qualitative Analysis"],
-    links: [
-      { label: "GitHub Repository", url: "https://github.com/encorelab/ai-theme-analyser" },
-      { label: "ICLS 2025 Publication", url: "https://doi.org/10.22318/icls2025.322165" }
-    ]
-  },
-  {
-    id: 11,
-    title: "AI Emotion Analyzer",
-    categories: ["AI & Analytics", "Research & Pedagogy"],
-    role: "Developer",
-    summary: "Scalable emotion identification tool for qualitative datasets.",
-    description: "Built a specialized tool for extracting and classifying emotional markers within large textual datasets. This Human-in-the-Loop system allows researchers to validate AI-generated emotion codes.\n\nResearch Context: Yu, E., Burns, S., Wiebe J.P., Perlman, J., Chen I., Kahlon, K., Perlman, M. (Under Review). Parent Voices on the benefits and challenges of Canada’s new child care policy: An emotion analysis using a large language model.",
-    tags: ["Python", "NLP", "Emotion Analysis", "Research Tool"],
-    links: [
-      { label: "GitHub Repository", url: "https://github.com/JoelWiebe/AI-Emotion-Analyzer" }
-    ]
-  },
-  {
-    id: 12,
-    title: "AI Data Extractor",
-    categories: ["AI & Analytics", "Research & Pedagogy"],
-    role: "Developer",
-    summary: "Automated data extraction for scoping reviews.",
-    description: "Developed a Python-based tool to automate the extraction of specific data points from full-text research papers. This tool supports scoping reviews by parsing PDFs and structuring unstructured academic text into analyzable formats.\n\nPublished Protocol: Yu, E., Burns, S., Wiebe, J. P., Schmeichel, A., & Perlman, M. (2025). Application of artificial intelligence in early childhood development: a scoping review protocol. BMJ Open.",
-    tags: ["Python", "PDF Parsing", "Data Extraction", "Automation"],
-    links: [
-      { label: "GitHub Repository", url: "https://github.com/JoelWiebe/AI-Data-Extractor" },
-      { label: "BMJ Open Publication", url: "https://doi.org/10.1136/bmjopen-2025-106044" }
-    ]
-  },
-  {
-    id: 2,
-    title: "Personal Portfolio Infrastructure (In-Progress)",
-    categories: ["Full Stack Ed-Tech", "Cloud & DevOps"],
-    role: "Architect",
-    summary: "High-availability portfolio on OCI using Laravel and MySQL.",
-    description: "Architected a personal portfolio using Laravel and MySQL hosted on Oracle Cloud Infrastructure (OCI). Demonstrates high-fidelity implementation of OWASP security controls, AODA-compliant accessible design, and performant CSS/JS animations, utilizing Eloquent ORM for robust data modeling.",
-    tags: ["Laravel", "MySQL", "OCI", "Nginx", "AODA", "OWASP"],
-    links: []
-  },
-  {
-    id: 3,
-    title: "Crowd Tutor: Knowledge Worlds",
-    categories: ["Full Stack Ed-Tech", "AI & Analytics", "Research & Pedagogy"],
-    role: "Founding Director & Lead Developer",
-    summary: "Scalable adaptive learning platform using Flutter and Generative AI.",
-    description: "Founded a tech initiative for youth upskilling. Architecting a scalable adaptive learning platform using Flutter, Firebase, and Generative AI to gamify interest exploration and social learning. The system implements the MMMAAP instructional model (Multi-sensory, Motivational, Meaningful, Active, Applied, and Peer Learning).",
-    tags: ["Flutter", "Firebase", "Generative AI", "Bonfire 2D", "Mobile"],
-    links: [
-      { label: "crowdtutor.org", url: "https://crowdtutor.org" }
-    ]
-  },
-  {
-    id: 4,
-    title: "CK Board & SCORE Platform",
-    categories: ["Full Stack Ed-Tech", "Cloud & DevOps", "Research & Pedagogy"],
-    role: "Full Stack Developer & Researcher",
-    summary: "Real-time orchestration on Azure PaaS with Node.js and WebSockets.",
-    description: "Architected the CK Board and SCORE Authoring platforms on Azure PaaS. Utilized Angular, Node.js, and FabricJS for the frontend canvases. Implemented Redis and WebSockets to power 'RoomCast,' enabling real-time distribution and synchronization of artifacts across student devices in high-availability educational settings.",
-    tags: ["Angular", "Node.js", "Azure PaaS", "Redis", "WebSockets", "FabricJS", "MongoDB"],
-    links: [
-      { label: "Watch Demo Video", url: "https://www.youtube.com/watch?v=t4aLSKlEc90" }
-    ]
-  },
-  {
-    id: 13,
-    title: "TMU Rehearsals Platform",
-    categories: ["Full Stack Ed-Tech", "Research & Pedagogy"],
-    role: "Technical Consultant & Developer",
-    summary: "Custom research platform for Toronto Metropolitan University.",
-    description: "Consulted with faculty to identify platform needs for a specific research grant. Forked UC Berkeley's WISE project and rebranded it as 'Rehearsals'. Enabled experimental AI features and designed a custom data collection activity deployed to over 200 students, ensuring the platform met strict research objectives.",
-    tags: ["Java Spring", "Angular", "Research Design", "AI Integration", "Consulting"],
-    links: []
-  },
-  {
-    id: 5,
-    title: "ISLS Technical Infrastructure",
-    categories: ["Cloud & DevOps", "Full Stack Ed-Tech"],
-    role: "Technical Lead, Publications",
-    summary: "Automation pipelines for proceedings and DSpace repositories.",
-    description: "Global Technical Leadership for the International Society of the Learning Sciences. Engineered Python automation pipelines to process proceedings metadata, generate import packages for DSpace, and execute automated DOI registration via CrossRef. Developed a full-stack validation tool using Docker, Flask, and Jinja2 on Google Cloud.",
-    tags: ["Python", "DSpace", "Docker", "Flask", "Google Cloud", "CrossRef"],
-    links: []
-  },
-  {
-    id: 6,
-    title: "WISE Project (Berkeley Collab)",
-    categories: ["Full Stack Ed-Tech"],
-    role: "Collaborator & Developer",
-    summary: "Extended Java Spring/Angular codebase for international research.",
-    description: "Forked and extended a complex Java Spring/Angular codebase to support international research. Deployed containerized environments using Docker and explored new applications of LLMs for knowledge integration guidance and assessment.",
-    tags: ["Java Spring", "Angular", "Docker", "LLMs", "Research"],
-    links: []
-  },
-  {
-    id: 14,
-    title: "Darwin Robot (Autonomous Agents)",
-    categories: ["HCI & Robotics"],
-    role: "Robotics Developer",
-    summary: "C++ Development for Darwin humanoid robot in FIRA HuroCup.",
-    description: "Member of the Autonomous Agents Lab at the University of Manitoba. Developed C++ control software for the Darwin humanoid robot to compete in the FIRA HuroCup Marathon. Focused on computer vision integration and gait stability for autonomous navigation.",
-    tags: ["C++", "Robotics", "Computer Vision", "Autonomous Agents", "Darwin-OP"],
-    links: []
-  },
-  {
-    id: 15,
-    title: "Nao Robot Telepresence",
-    categories: ["HCI & Robotics", "Research & Pedagogy"],
-    role: "HCI Researcher",
-    summary: "Telepresence interface development leading to IEEE publication.",
-    description: "Engineered a microcontroller system for a boom camera on a Nao humanoid robot. Conducted HCI research on telepresence interfaces, which led to a publication in the IEEE International Symposium on Robot and Human Interactive Communication (RO-MAN).",
-    tags: ["Robotics", "HCI", "Nao", "Research", "IEEE"],
-    links: [
-      { label: "IEEE Publication", url: "https://ieeexplore.ieee.org/document/8172419" }
-    ]
-  },
-  {
-    id: 16,
-    title: "Remote Nurse Training Robotics",
-    categories: ["HCI & Robotics", "Research & Pedagogy", "Ed-Tech Support"],
-    role: "Educational Technology Researcher",
-    summary: "Supporting remote presence robotics for Northern Saskatchewan nursing education.",
-    description: "Supported faculty at the University of Saskatchewan in using remote presence robotics to deliver nurse training to remote northern regions. Performed observations and engaged in dialogue with faculty to optimize the use of robotics for productive pedagogical dialogue and lab training.",
-    tags: ["Telepresence", "Robotics", "Nursing Education", "Qualitative Observation", "Remote Learning"],
-    links: []
-  },
-  {
-    id: 7,
-    title: "ECE Data Visualization",
-    categories: ["AI & Analytics", "Consulting"],
-    role: "Technical Data Consultant",
-    summary: "Automated assessment reporting workflow for Govt. of Nova Scotia.",
-    description: "Designed a Python-based data curation and visualization workflow for Mount Saint Vincent University and the Government of Nova Scotia. The system generates automated assessment reports for Early Childhood Education Centers, supporting government quality assurance teams.",
-    tags: ["Python", "Data Visualization", "Consulting", "Automation"],
-    links: []
-  },
-  {
-    id: 8,
-    title: "Robot Control Interface",
-    categories: ["HCI & Robotics"],
-    role: "Robotics & Interface Developer",
-    summary: "C#/WPF application for Microsoft Surface to control inspection robots.",
-    description: "Designed a full-stack C#/WPF application for the Microsoft Surface tablet to control Inuktun inspection robot cameras and configurations. Implemented 3D animations to visualize robot body orientation and camera views in real-time.",
-    tags: ["C#", "WPF", "Robotics", "Microsoft Surface", "3D Animation"],
-    links: []
-  },
-  {
-    id: 9,
-    title: "College of Nursing Operations",
-    categories: ["Ed-Tech Support"],
-    role: "Project Manager & Dev",
-    summary: "Managed SharePoint workflows and institutional PHP website.",
-    description: "Co-administered the College’s institutional PHP website and managed complex internal workflows using SharePoint (room bookings, document management). Sustained the technical use of ExamSoft and facilitated the adoption of electronic grading for OSCEs.",
-    tags: ["PHP", "SharePoint", "ExamSoft", "LMS", "Operations"],
-    links: []
-  },
-  {
-    id: 10,
-    title: "Geomax Enterprise Mobile",
-    categories: ["Full Stack Ed-Tech", "Legacy Systems"],
-    role: "Wireless Application Developer",
-    summary: "Java Server Pages (JSP) application with Hibernate ORM.",
-    description: "Designed and deployed a Java Server Pages (JSP) application utilizing Servlets, JavaBeans, and Hibernate ORM for efficient MySQL data management. Implemented interactive front-ends using JavaScript and jQuery that integrated with server-side logic for push notifications.",
-    tags: ["Java", "JSP", "Hibernate ORM", "MySQL", "jQuery", "Enterprise"],
-    links: []
-  }
-];
+const FALLBACK_PROJECTS = []; // Define a fallback if API fails or is empty
 
 const CATEGORIES = ["All", "Full Stack Ed-Tech", "AI & Analytics", "Cloud & DevOps", "HCI & Robotics", "Research & Pedagogy"];
 
 // --- Components ---
 
-const Badge = ({ children, className = "" }) => (
-  <span className={`px-3 py-1 text-base font-medium rounded-full bg-slate-100 text-primary border border-slate-200 ${className}`}>
-    {children}
-  </span>
-);
-
-const Modal = ({ project, onClose }) => {
-  if (!project) return null;
-
-  return (
-    <div 
-      role="dialog" 
-      aria-modal="true"
-      aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 transition-opacity animate-fadeIn"
-    >
-      <div 
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative animate-slideUp"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button 
-          onClick={onClose}
-          aria-label="Close project details" 
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 transition-colors z-10 bg-white"
-        >
-          <X className="w-6 h-6 text-slate-600" aria-hidden="true" />
-        </button>
-        
-        <div className="p-8">
-          <div className="mb-6">
-            <div className="flex gap-2 mb-2 flex-wrap">
-              {project.categories.map(cat => (
-                 <span key={cat} className="text-primary font-semibold tracking-wider text-base uppercase block">
-                  {cat}
-                </span>
-              ))}
-            </div>
-            <h2 id="modal-title" className="text-3xl font-bold text-slate-900 mb-2">{project.title}</h2>
-            <p className="text-xl text-slate-700 font-medium">{project.role}</p>
-          </div>
-
-          <div className="prose prose-slate max-w-none mb-8 text-slate-700 text-lg leading-relaxed whitespace-pre-line">
-            <p>{project.description}</p>
-          </div>
-          
-          {project.links && project.links.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-base font-semibold text-slate-900 uppercase tracking-wide mb-3">Key Repositories & Links</h3>
-              <div className="flex flex-col gap-2">
-                {project.links.map(link => (
-                  <a 
-                    key={link.url} 
-                    href={link.url} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="flex items-center gap-2 text-primary hover:text-primary-700 font-medium transition-colors text-lg"
-                  >
-                    {link.url.includes("youtube") ? <Play className="w-5 h-5" aria-hidden="true" /> :
-                     link.url.includes("doi.org") || link.url.includes("ieeexplore") ? <FileText className="w-5 h-5" aria-hidden="true" /> : 
-                     link.url.includes("github") ? <Github className="w-5 h-5" aria-hidden="true" /> : 
-                     <Globe className="w-5 h-5" aria-hidden="true" />} 
-                    {link.label} 
-                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="border-t border-slate-100 pt-6">
-            <h3 className="text-base font-semibold text-slate-900 uppercase tracking-wide mb-4">Technologies & Skills</h3>
-            <div className="flex flex-wrap gap-2">
-              {project.tags.map(tag => (
-                <Badge key={tag} className="bg-slate-100 text-primary border-slate-200">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+import ProjectDetailModal from './ProjectDetailModal'; // Import the new modal component
 
 const ProjectCard = ({ project, onClick }) => {
   const mainCat = project.categories[0];
@@ -352,9 +94,9 @@ const NavLink = ({ href, children }) => {
 const PortfolioContent = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  // Initialize with Data (No API Call needed for Single-File Version)
-  const [projects, setProjects] = useState(PROJECTS);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [projects, setProjects] = useState([]); // Initialize as empty, will fetch from API
+  const [selectedProject, setSelectedProject] = useState(null); // For the modal
+  const [loadingProjects, setLoadingProjects] = useState(true); // New loading state
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
@@ -362,24 +104,47 @@ const PortfolioContent = () => {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchProjectsFromAPI = async () => {
+      setLoadingProjects(true);
       try {
         const response = await fetch('/api/projects');
         if (response.ok) {
           const data = await response.json();
-          if (data && data.length > 0) setProjects(data);
+          if (data && data.length > 0) {
+            setProjects(data);
+          } else {
+            // Fallback if API returns empty
+            setProjects(FALLBACK_PROJECTS);
+          }
+        } else {
+          // Fallback if API call fails
+          setProjects(FALLBACK_PROJECTS);
         }
       } catch (error) {
         // Fallback to static PROJECTS
+        setProjects(FALLBACK_PROJECTS);
+      } finally {
+        setLoadingProjects(false);
       }
     };
-    fetchProjects();
+    fetchProjectsFromAPI();
   }, []);
-
+  
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const fetchProjectsOnFocus = () => {
+        // Refetch projects when the window gains focus, e.g., returning from another tab
+        fetch('/api/projects').then(res => res.json()).then(data => {
+            if (data && data.length > 0) setProjects(data);
+        }).catch(() => setProjects(FALLBACK_PROJECTS));
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('focus', fetchProjectsOnFocus);
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('focus', fetchProjectsOnFocus);
+    };
   }, []);
 
   const handleCopyEmail = () => {
@@ -553,7 +318,7 @@ const PortfolioContent = () => {
               ))}
             </div>
 
-            <motion.div 
+            <motion.div
               layout 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
@@ -586,7 +351,7 @@ const PortfolioContent = () => {
                     No projects found matching your search.
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence>              
             </motion.div>
           </div>
         </section>
@@ -698,8 +463,8 @@ const PortfolioContent = () => {
         </footer>
       </main>
 
-      {selectedProject && (
-        <Modal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      {selectedProject && ( // Use the new ProjectDetailModal
+        <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       )}
       
       <style>{`

@@ -11,6 +11,7 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
         url_web: '',
         url_ios: '',
         url_android: '',
+        image_url: '',
         url_repo: '',
         tags: [],
         categories: [],
@@ -117,6 +118,7 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
                         {renderInput('title', 'Project Title', 'text', true)}
                         {renderInput('summary', 'Summary / Subtitle', 'text', true)}
                         {renderTextarea('description', 'Full Description')}
+                        {renderInput('image_url', 'Image URL', 'url')}
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                            {renderInput('role', 'My Role')}

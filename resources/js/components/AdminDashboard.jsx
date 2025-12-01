@@ -75,14 +75,13 @@ const AdminDashboardContent = () => {
             
             if (!response.ok) {
                 const errorData = await response.json();
-                const errorMessage = errorData.message || 'Failed to save project';
-                // You might want to display this error in the UI
-                throw new Error(errorMessage);
+                throw new Error(errorData.message || 'Failed to save project');
             }
 
+            // The save was successful, now close the form and refresh the data.
             setIsFormVisible(false);
             setEditingProject(null);
-            fetchProjects(); // Refresh the list
+            await fetchProjects(); // Refresh the list
         } catch (err) {
             alert('Error saving project: ' + (err instanceof Error ? err.message : 'Unknown error'));
         }
