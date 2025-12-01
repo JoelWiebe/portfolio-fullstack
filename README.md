@@ -1,4 +1,10 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center">
+  <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a>
+</p>
+
+# Full-Stack Portfolio Application
+
+This is a comprehensive portfolio application built with a modern technology stack, featuring a headless Laravel API backend and a dynamic React frontend. It includes a secure admin area for managing portfolio projects.
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
@@ -7,53 +13,173 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About The Project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project serves as a personal portfolio platform, designed to showcase projects in a clean and modern interface. The admin dashboard provides full CRUD (Create, Read, Update, Delete) functionality for project management.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Built With
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+*   **Backend:** [Laravel](https://laravel.com/)
+*   **Frontend:** [React](https://reactjs.org/) (with [Vite](https://vitejs.dev/))
+*   **Authentication:** [Laravel Sanctum](https://laravel.com/docs/sanctum)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Testing:** [Pest](https://pestphp.com/) (Backend), [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/) (Frontend)
 
-## Learning Laravel
+## Getting Started
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+To get a local copy up and running, follow these steps.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Prerequisites
 
-## Laravel Sponsors
+*   PHP >= 8.2
+*   Composer
+*   Node.js & npm
+*   A local database (e.g., MySQL, PostgreSQL, SQLite)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Installation
 
-### Premium Partners
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/your_username/portfolio-fullstack.git
+    cd portfolio-fullstack
+    ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2.  **Install backend dependencies:**
+    ```sh
+    composer install
+    ```
 
-## Contributing
+3.  **Install frontend dependencies:**
+    ```sh
+    npm install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4.  **Set up your environment file:**
+    ```sh
+    cp .env.example .env
+    ```
+    Be sure to update the `DB_*` variables in your `.env` file to match your local database credentials.
 
-## Code of Conduct
+5.  **Generate an application key:**
+    ```sh
+    php artisan key:generate
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6.  **Run database migrations and seeders:**
+    This will create the necessary tables and populate them with initial data (including a default admin user).
+    ```sh
+    php artisan migrate --seed
+    ```
 
-## Security Vulnerabilities
+7.  **Run the development servers:**
+    This command uses `concurrently` to start the Laravel server, Vite dev server, and queue worker.
+    ```sh
+    composer run dev
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+You can now access the application at `http://127.0.0.1:8000`.
 
-## License
+## Testing
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project has a comprehensive test suite for both the backend and frontend.
+
+*   **Run Backend (Pest) Tests:**
+    ```bash
+    composer test
+    ```
+
+*   **Run Frontend (Vitest) Tests:**
+    ```bash
+    npm test
+    ```
+    Or, for an interactive UI:
+    ```bash
+    npm run test:ui
+    ```
+
+## Server Management & Deployment Notes
+
+This section contains helpful commands for maintaining the remote server.
+
+### Database
+
+To seed the database with specific data on a remote server:
+```bash
+php artisan db:seed --class=ProjectSeeder --force
+php artisan db:seed --class=UserSeeder --force
+```
+ 
+To create a database backup on the remote server:
+```bash
+cd /home/ubuntu/
+mysqldump -u ubuntu -p --no-tablespaces portfolio > pre_seed_backup.sql
+```
+ 
+### Updating Application Caches (Remote Server)
+ 
+When deploying new code, it's important to clear and refresh Laravel's caches to ensure changes are applied.
+ 
+```bash
+cd /var/www/portfolio
+ 
+# Clear the route cache
+sudo php artisan route:clear
+ 
+# Clear the config cache (good practice during deployment)
+sudo php artisan config:clear
+ 
+# Optimize everything again (re-caches routes and config)
+sudo php artisan optimize
+```
+ 
+### Deploying Frontend Build
+ 
+1.  **On your local machine**, build the frontend assets and securely copy them to the remote server:
+    ```bash
+    npm run build
+    scp -r -i ~/Downloads/ssh-key.key public/build ubuntu@40.233.117.240:~/new-build
+    ```
+ 
+2.  **On the remote server**, back up the old build directory and replace it with the new one:
+    ```bash
+    cd /var/www/portfolio/public
+ 
+    # Backup the current build directory with a timestamp
+    if [ -d "build" ]; then
+        sudo mv build "build_backup_$(date +%Y%m%d_%H%M%S)"
+    fi
+ 
+    # Move the new build into place
+    sudo mv ~/new-build ./build
+ 
+    # Set correct permissions
+    sudo chmod -R 775 build
+    sudo chown -R ubuntu:www-data build
+    ```
+ 
+### API Testing
+ 
+To test the login endpoint and retrieve an authentication token, use `curl`:
+```bash
+curl -X POST https://portfolio.joelwiebe.ca/api/login \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-d '{"email": "admin@example.com", "password": "password"}'
+```
+ 
+### Environment Configuration
+ 
+To edit the environment variables on the remote server:
+```bash
+vim /var/www/portfolio/.env
+```
+ 
+### File Permissions
+ 
+To ensure web-accessible files like `robots.txt` and `sitemap.xml` have the correct permissions on the remote server:
+```bash
+sudo chown ubuntu:www-data public/robots.txt
+sudo chown ubuntu:www-data public/sitemap.xml
+chmod 644 public/robots.txt
+chmod 644 public/sitemap.xml
+```
