@@ -1,7 +1,49 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X, Github, Globe, Apple, Play } from 'lucide-react';
 
 const ProjectDetailModal = ({ project, onClose }) => {
+    const modalRef = useRef(null);
+
+    // Handle focus trapping and Escape key to close
+    useEffect(() => {
+        if (!project) return;
+
+        const modalElement = modalRef.current;
+        if (!modalElement) return;
+
+        // Focus the modal container when it opens
+        modalElement.focus();
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+
+            if (event.key === 'Tab') {
+                const focusableElements = modalElement.querySelectorAll(
+                    'a[href], button, textarea, input, select'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (event.shiftKey) { // Shift + Tab
+                    if (document.activeElement === firstElement) {
+                        lastElement.focus();
+                        event.preventDefault();
+                    }
+                } else { // Tab
+                    if (document.activeElement === lastElement) {
+                        firstElement.focus();
+                        event.preventDefault();
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [project, onClose]);
+
     if (!project) return null;
 
     const renderLink = (url, Icon, label) => {
@@ -20,8 +62,17 @@ const ProjectDetailModal = ({ project, onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-start pt-12">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+        <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-start pt-12"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
+        >
+            <div 
+                ref={modalRef}
+                className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col focus:outline-none"
+                tabIndex="-1"
+            >
                 <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                     <h2 className="text-2xl font-bold text-slate-800">{project.title}</h2>
                     <button type="button" onClick={onClose} className="p-2 rounded-full hover:bg-slate-100" aria-label="Close project details">

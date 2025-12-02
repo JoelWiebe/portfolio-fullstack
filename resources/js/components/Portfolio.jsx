@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, BrowserRouter, useInRouterContext } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
@@ -101,6 +101,7 @@ const PortfolioContent = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   
+  const modalTriggerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -147,6 +148,19 @@ const PortfolioContent = () => {
     };
   }, []);
 
+  // Effect to handle returning focus when the modal closes
+  useEffect(() => {
+    // If no project is selected (modal is closed) and we have a ref to the trigger
+    if (!selectedProject && modalTriggerRef.current) {
+      // A small timeout is sometimes needed to ensure the element is focusable
+      // after other DOM changes have completed.
+      setTimeout(() => {
+        modalTriggerRef.current.focus();
+        modalTriggerRef.current = null; // Clear the ref after use
+      }, 0);
+    }
+  }, [selectedProject]);
+
   const handleCopyEmail = () => {
     const email = "me@joelwiebe.ca";
     const textArea = document.createElement("textarea");
@@ -182,6 +196,12 @@ const PortfolioContent = () => {
       
     return matchesCategory && matchesSearch;
   });
+
+  const handleProjectClick = (project) => {
+    // Save the element that triggered the modal
+    modalTriggerRef.current = document.activeElement;
+    setSelectedProject(project);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-[#002A5C] selection:text-white">
@@ -338,7 +358,7 @@ const PortfolioContent = () => {
                     >
                       <ProjectCard 
                         project={project} 
-                        onClick={setSelectedProject} 
+                        onClick={handleProjectClick} 
                       />
                     </motion.div>
                   ))
@@ -366,7 +386,7 @@ const PortfolioContent = () => {
                   I possess a unique dual background: <strong>Computer Science (B.Sc.)</strong> and <strong>Learning Sciences (PhD Candidate)</strong>. This allows me to build software that is not only technically robust but also pedagogically effective.
                 </p>
                 <p className="text-slate-100 leading-relaxed mb-8 text-xl">
-                  My experience spans the entire stack: from complex backend systems and Robotics control interfaces to modern Cloud Architectures and AI Automation. I have a proven track record of adhering to AODA and OWASP standards within university contexts.
+                  My experience spans the entire stack: from complex backend systems and Robotics control interfaces to modern Cloud Architectures and AI Automation. I have knowledge of AODA and OWASP standards and an ability to apply these best practices within university contexts.
                 </p>
                 
                 <div className="flex flex-col md:flex-row gap-6 pt-4 border-t border-[#00204E]/50">
