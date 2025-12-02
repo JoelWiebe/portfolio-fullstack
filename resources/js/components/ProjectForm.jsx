@@ -144,14 +144,14 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
                                     className="flex-grow px-3 py-2 border border-slate-300 rounded-md shadow-sm text-sm"
                                     placeholder="e.g., Web Development"
                                 />
-                                <button type="button" onClick={addCategory} aria-label="Add Category" className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200">
+                                <button type="button" onClick={addCategory} aria-label="Add Category" className="px-4 py-2 bg-[#002A5C] text-white rounded-md text-sm font-medium hover:bg-[#00204E] transition-colors">
                                     <Plus className="w-4 h-4 inline-block mr-1" aria-hidden="true" />
                                     Add
                                 </button>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {project.categories.map(cat => (
-                                    <span key={cat} className="flex items-center gap-2 bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-sm">
+                                    <span key={cat} className="flex items-center gap-2 bg-[#002A5C] text-white px-2 py-1 rounded-md text-sm">
                                         {cat}
                                         <button type="button" onClick={() => removeCategory(cat)} aria-label={`Remove ${cat}`}>
                                             <X className="w-3 h-3" />
@@ -224,7 +224,7 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
                                     className="flex-grow px-3 py-2 border border-slate-300 rounded-md text-sm"
                                     placeholder="https://..."
                                 />
-                                <button type="button" onClick={addLink} aria-label="Add Link" className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200">
+                                <button type="button" onClick={addLink} aria-label="Add Link" className="px-4 py-2 bg-[#002A5C] text-white rounded-md text-sm font-medium hover:bg-[#00204E] transition-colors">
                                     <Plus className="w-4 h-4 inline-block mr-1" aria-hidden="true" />
                                     Add
                                 </button>
@@ -236,7 +236,7 @@ const ProjectForm = ({ project: initialProject, onSave, onCancel }) => {
                         <button type="button" onClick={onCancel} className="px-4 py-2 bg-white border border-slate-300 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50">
                             Cancel
                         </button>
-                        <button type="submit" className="px-6 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 shadow-sm">
+                        <button type="submit" className="px-6 py-2 bg-[#002A5C] text-white rounded-md text-sm font-medium hover:bg-[#00204E] shadow-sm transition-colors">
                             {isEditing ? 'Save Changes' : 'Create Project'}
                         </button>
                     </div>

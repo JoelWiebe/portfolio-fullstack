@@ -217,7 +217,7 @@ const AdminDashboardContent = () => {
                                         <td className="p-4">
                                             <div className="flex flex-wrap gap-1">
                                                 {project.categories?.slice(0, 1).map(cat => (
-                                                    <span key={cat} className="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium">
+                                                    <span key={cat} className="px-2 py-1 bg-[#002A5C] text-white text-xs rounded-md font-medium">
                                                         {cat}
                                                     </span>
                                                 ))}

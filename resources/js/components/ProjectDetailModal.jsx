@@ -124,12 +124,12 @@ const ProjectDetailModal = ({ project, onClose }) => {
                             <h3 className="text-lg font-semibold text-slate-700 mb-2">Details</h3>
                             <div className="flex flex-wrap gap-2">
                                 {project.categories?.map(cat => (
-                                    <span key={cat} className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+                                    <span key={cat} className="px-3 py-1 bg-[#002A5C] text-white rounded-full text-sm font-medium">
                                         {cat}
                                     </span>
                                 ))}
                                 {project.tags?.map(tag => (
-                                    <span key={tag} className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium">
+                                    <span key={tag} className="px-3 py-1 bg-slate-200 text-slate-700 rounded-full text-sm font-medium">
                                         {tag}
                                     </span>
                                 ))}
@@ -139,7 +139,7 @@ const ProjectDetailModal = ({ project, onClose }) => {
                 </div>
 
                 <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
-                    <button type="button" onClick={onClose} className="px-6 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 shadow-sm">
+                    <button type="button" onClick={onClose} className="px-6 py-2 bg-[#002A5C] text-white rounded-md text-sm font-medium hover:bg-[#00204E] shadow-sm transition-colors">
                         Close
                     </button>
                 </div>

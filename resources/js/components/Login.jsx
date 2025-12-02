@@ -57,7 +57,7 @@ const LoginForm = () => {
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg border border-slate-100">
                 <div className="text-center">
-                    <div className="mx-auto h-12 w-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-4">
+                    <div className="mx-auto h-12 w-12 bg-[#E6EAF0] text-[#002A5C] rounded-full flex items-center justify-center mb-4">
                         <Lock className="h-6 w-6" />
                     </div>
                     <h2 className="text-3xl font-bold text-slate-900">Admin Access</h2>
@@ -84,7 +84,7 @@ const LoginForm = () => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="pl-10 block w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-indigo-500 focus:border-indigo-500"
+                                    className="pl-10 block w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-[#002A5C] focus:border-[#002A5C]"
                                     placeholder="you@example.com"
                                 />
                             </div>
@@ -101,7 +101,7 @@ const LoginForm = () => {
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="pl-10 block w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-indigo-500 focus:border-indigo-500"
+                                    className="pl-10 block w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-[#002A5C] focus:border-[#002A5C]"
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -111,7 +111,7 @@ const LoginForm = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#002A5C] hover:bg-[#00204E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002A5C] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Sign in"}
                     </button>
