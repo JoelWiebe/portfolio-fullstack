@@ -481,7 +481,7 @@ const PortfolioContent = () => {
             <div className="flex flex-col items-center gap-2 text-slate-600 text-base">
               <div className="flex items-center gap-2">
                  <Database className="w-4 h-4 text-[#002A5C]" aria-hidden="true" />
-                 <span>Built with <strong>Laravel 10</strong> & <strong>React 18</strong></span>
+                 <span>Built with <strong>Laravel 12</strong> & <strong>React 19</strong></span>
               </div>
               <p>© {new Date().getFullYear()} Joel P. Wiebe. All rights reserved.</p>
             </div>
