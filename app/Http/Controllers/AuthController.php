@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -27,16 +28,28 @@ class AuthController extends Controller
         // Create new token
         $token = $user->createToken('admin-token')->plainTextToken;
 
+        // Set session duration (e.g., 30 days in minutes)
+        $minutes = 30 * 24 * 60;
+
         return response()->json([
             'message' => 'Login successful',
-            'token' => $token,
             'user' => $user
-        ]);
+        ])->withCookie(cookie(
+            'portfolio_token', // Cookie name
+            $token,             // Token value
+            $minutes,           // Duration
+            '/',                // Path
+            null,               // Domain
+            config('app.env') === 'production', // `secure` flag
+            true,               // `httpOnly` flag
+            false,              // `raw`
+            'lax'               // `sameSite` attribute
+        ));
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['message' => 'Logged out'])->withCookie(Cookie::forget('portfolio_token'));
     }
 }

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate, BrowserRouter, useInRouterContext } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, BrowserRouter, useInRouterContext, Navigate } from 'react-router-dom';
 import { Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
+import { AuthContext } from '../app';
 
 // The inner form component that uses navigation logic
 const LoginForm = () => {
@@ -8,6 +9,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -30,6 +32,7 @@ const LoginForm = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, password }),
             });
 
@@ -39,8 +42,8 @@ const LoginForm = () => {
                 throw new Error(data.message || 'Login failed');
             }
 
-            // Save the token securely
-            localStorage.setItem('portfolio_token', data.token);
+            // The cookie is set by the server. We update the context with the user data.
+            setUser(data.user);
             
             // Redirect to the Admin Dashboard
             navigate('/admin');

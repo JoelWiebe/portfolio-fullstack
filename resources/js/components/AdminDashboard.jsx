@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link, BrowserRouter, useInRouterContext } from 'react-router-dom';
 import { 
   Plus, 
@@ -9,6 +9,7 @@ import {
   AlertTriangle 
 } from 'lucide-react';
 import ProjectForm from './ProjectForm';
+import { AuthContext } from '../app';
 
 const AdminDashboardContent = () => {
     const [projects, setProjects] = useState([]);
@@ -16,6 +17,7 @@ const AdminDashboardContent = () => {
     const [error, setError] = useState('');
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
+    const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     // Fetch Projects on Load
@@ -26,21 +28,14 @@ const AdminDashboardContent = () => {
     const fetchProjects = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('portfolio_token');
-            if (!token) {
-                navigate('/login');
-                return;
-            }
-
             const response = await fetch('/api/projects', {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json',
-                }
+                },
+                credentials: 'include',
             });
 
             if (response.status === 401) {
-                localStorage.removeItem('portfolio_token');
                 navigate('/login');
                 throw new Error('Session expired. Please login again.');
             }
@@ -62,14 +57,13 @@ const AdminDashboardContent = () => {
         const method = isEditing ? 'PUT' : 'POST';
 
         try {
-            const token = localStorage.getItem('portfolio_token');
             const response = await fetch(url, {
                 method,
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(projectData),
             });
             
@@ -91,13 +85,12 @@ const AdminDashboardContent = () => {
         if (!window.confirm('Are you sure you want to delete this project? This cannot be undone.')) return;
 
         try {
-            const token = localStorage.getItem('portfolio_token');
             const response = await fetch(`/api/projects/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json',
-                }
+                },
+                credentials: 'include',
             });
 
             if (!response.ok) throw new Error('Failed to delete project');
@@ -111,20 +104,18 @@ const AdminDashboardContent = () => {
 
     const handleLogout = async () => {
         try {
-            const token = localStorage.getItem('portfolio_token');
             await fetch('/api/logout', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json',
-                }
+                },
+                credentials: 'include',
             });
         } catch (error) {
             console.error("Logout error", error);
         }
-        
-        localStorage.removeItem('portfolio_token');
-        navigate('/login');
+        setUser(null); // Clear the global auth state
+        navigate('/');
     };
 
     const handleCreateClick = () => {
@@ -156,7 +147,9 @@ const AdminDashboardContent = () => {
             <nav className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-10">
                 <div className="max-w-6xl mx-auto flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                        <div className="bg-primary-600 text-white p-2 rounded-lg font-bold">Admin</div>
+                        <div className="bg-[#002A5C] text-white p-2 rounded-lg font-bold">
+                            {user ? user.name.charAt(0) : 'A'}
+                        </div>
                         <h1 className="text-xl font-bold text-slate-800">Project Console</h1>
                     </div>
                     <div className="flex items-center gap-4">
@@ -197,7 +190,7 @@ const AdminDashboardContent = () => {
 
                 {/* Projects List */}
                 {!loading && !error && (
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 font-semibold">

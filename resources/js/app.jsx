@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-import React from 'react';
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -9,16 +9,78 @@ import Portfolio from './components/Portfolio';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 
+// --- Authentication Context ---
+export const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    // Check session once when the app starts
+    useEffect(() => {
+        const verifyAuth = async () => {
+            try {
+                // Always try to fetch the user. 
+                // Since you use credentials: 'include', Laravel sends the session cookie automatically.
+                const response = await fetch('/api/user', {
+                    headers: { 'Accept': 'application/json' },
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    setUser(userData);
+                } else {
+                    // 401 Unauthorized - User is strictly not logged in
+                    setUser(null);
+                }
+            } catch (error) {
+                // Network error or server down
+                console.log("Auth check failed / Not authenticated");
+                setUser(null);
+            } finally {
+                // Verification done, allow the app to render
+                setLoading(false);
+            }
+        };
+
+        verifyAuth();
+    }, []); // Empty dependency array ensures this runs only once on page load/refresh
+
+    const authContextValue = useMemo(() => ({
+        user,
+        setUser,
+        loading,
+    }), [user, loading]);
+
+    return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
+};
+
 // --- Protected Route Logic ---
-// This wrapper checks if a valid token exists in LocalStorage.
-// If not, it forces the user back to the /login page.
-const ProtectedRoute = ({ children }) => {
-    const token = localStorage.getItem('portfolio_token');
+const ProtectedRoute = ({ children, redirectTo = "/login" }) => {
+    const { user, loading } = useContext(AuthContext);
     
-    if (!token) {
-        return <Navigate to="/login" replace />;
+    // Show a blank screen (or spinner) while we ask Laravel if the cookie is valid
+    if (loading) return <div className="min-h-screen bg-slate-50" />; 
+
+    if (!user) {
+        return <Navigate to={redirectTo} replace />;
     }
     
+    return children;
+};
+
+// --- Public Route Logic ---
+// Prevents logged-in users from seeing the Login page again
+const PublicRoute = ({ children }) => {
+    const { user, loading } = useContext(AuthContext);
+
+    if (loading) return null;
+
+    if (user) {
+        return <Navigate to="/admin" replace />;
+    }
+
     return children;
 };
 
@@ -26,31 +88,38 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
     return (
         <BrowserRouter>
-            <Routes>
-                {/* 1. Public Portfolio (The Home Page) */}
-                <Route path="/" element={<Portfolio />} />
-
-                {/* 2. Admin Login */}
-                <Route path="/login" element={<Login />} />
-
-                {/* 3. Protected Admin Area */}
-                <Route 
-                    path="/admin" 
-                    element={
-                        <ProtectedRoute>
-                            <AdminDashboard />
-                        </ProtectedRoute>
-                    } 
-                />
-                
-                {/* 4. Catch-all: Redirect unknown routes to Home */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    {/* Public Route */}
+                    <Route path="/" element={<Portfolio />} />
+    
+                    {/* Guest Route (Redirects if logged in) */}
+                    <Route
+                        path="/login"
+                        element={
+                            <PublicRoute>
+                                <Login />
+                            </PublicRoute>
+                        }
+                    />
+    
+                    {/* Secure Route (Redirects if logged out) */}
+                    <Route
+                        path="/admin"
+                        element={
+                            <ProtectedRoute>
+                                <AdminDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     );
 };
 
-// --- Mount to DOM ---
 if (document.getElementById('root')) {
     const root = createRoot(document.getElementById('root'));
     root.render(

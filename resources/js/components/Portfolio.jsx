@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, BrowserRouter, useInRouterContext } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Link, BrowserRouter, useInRouterContext, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
   Code, 
@@ -29,6 +29,7 @@ import {
 // --- Latest Resume Data ---
 const FALLBACK_PROJECTS = []; // Define a fallback if API fails or is empty
 
+import { AuthContext } from '../app';
 const CATEGORIES = ["All", "Full Stack Ed-Tech", "AI & Analytics", "Cloud & DevOps", "HCI & Robotics", "Research & Pedagogy"];
 
 // --- Components ---
@@ -101,6 +102,7 @@ const PortfolioContent = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   
+  const { user } = useContext(AuthContext);
   const modalTriggerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -223,7 +225,11 @@ const PortfolioContent = () => {
             <NavLink href="#about">About</NavLink>
             <NavLink href="#portfolio">Portfolio</NavLink>
             <NavLink href="#contact">Contact</NavLink>
-            <Link to="/login" className="text-slate-400 hover:text-[#002A5C] transition-colors" title="Admin Access">
+            <Link 
+              to={user ? "/admin" : "/login"} 
+              className="text-slate-400 hover:text-[#002A5C] transition-colors" 
+              title={user ? "Go to Admin Dashboard" : "Admin Login"}
+            >
                 <Lock className="w-4 h-4" />
             </Link>
             <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="flex items-center gap-1 text-lg font-semibold text-[#002A5C] hover:text-[#00204E] transition-colors">
@@ -247,7 +253,7 @@ const PortfolioContent = () => {
             <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
             <a href="#portfolio" onClick={() => setMobileMenuOpen(false)}>Portfolio</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-            <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500">
+            <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500">
                 <Lock className="w-4 h-4" /> Admin Login
             </Link>
             <a href="https://joelwiebe.ca" target="_blank" rel="noreferrer" className="text-[#002A5C] font-bold">Visit JoelWiebe.ca</a>

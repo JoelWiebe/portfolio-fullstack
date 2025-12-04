@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\IsAdmin; 
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,7 @@ Route::post('/login', [AuthController::class, 'login']);
 | These routes require the 'Authorization: Bearer <token>' header.
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    // Admin Actions: Create, Update, Delete Projects
+Route::middleware(['auth:sanctum', IsAdmin::class])->group(function () {
     Route::post('/projects', [ProjectController::class, 'store']);
     Route::put('/projects/{project}', [ProjectController::class, 'update']);
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);

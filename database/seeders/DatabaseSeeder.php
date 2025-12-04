@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         // Tell Laravel to run your ProjectSeeder
         $this->call([
+            UserSeeder::class,
             ProjectSeeder::class,
         ]);
     }

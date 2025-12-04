@@ -16,7 +16,8 @@ class UserSeeder extends Seeder
                 'name' => 'Joel Wiebe',
                 'email' => 'me@joelwiebe.ca',
                 // Use the environment variable 'ADMIN_PASSWORD', or fallback to 'password' if missing
-                'password' => Hash::make(env('ADMIN_PASSWORD', 'password')), 
+                'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
+                'role' => 'admin', // Assign the admin role
             ]);
         }
     }
